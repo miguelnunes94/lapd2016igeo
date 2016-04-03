@@ -2,14 +2,18 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	
-}
 
+}
+#navbar {
+	background-color: #f8f8f8;
+}
 #menu_div{
 	height: 5%;
+	margin: 0;
+	padding: 0;
 }
 #main_div{
-	height: 80%;
+	height: 75%;
 }
 #logs_div{
 	height: 15%;
@@ -32,4 +36,9 @@ html, body {
 	border-color: gray;
 	border-radius: 15px;
 
+}
+
+.container-fluid{
+	margin-top: 1px;
+	padding-top: 1px;
 }

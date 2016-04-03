@@ -16,17 +16,49 @@
     <script src="js/index.js"></script>
   </head>
   <body>
+  <nav id="menu_div" class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Exploracafora</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li> -->
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Welcome: Username</a></li>
+            <li class="active"><a id="logout" href="#">Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
   <div class="container-fluid div_full_height">
-    <div id="menu_div" class="row">
-      <button type="button" class="btn btn-success">Exploracafora (logo ou assim)</button>
-      <button id="logout" type="button" class="btn btn-default pull-right">Logout</button>
-    </div>
     <div id="main_div" class="row"> 
       <div id="google_maps_div" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 div_full_height div_borders">
         <div id="map" class="div_full_height"> </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 div_full_height div_borders">
-        <p> Espécies Presentes: </p>
+         Espécies Presentes: 
       </div>
     </div>
     <div id="logs_div" class="row div_borders"> 
