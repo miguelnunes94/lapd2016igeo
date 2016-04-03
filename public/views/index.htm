@@ -16,7 +16,26 @@
     <script src="js/index.js"></script>
   </head>
   <body>
-    <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+  <div class="container-fluid div_full_height">
+    <div id="menu_div" class="row">
+      <button type="button" class="btn btn-success">Exploracafora (logo ou assim)</button>
+      <button id="logout" type="button" class="btn btn-default pull-right">Logout</button>
+    </div>
+    <div id="main_div" class="row"> 
+      <div id="google_maps_div" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 div_full_height div_borders">
+        <div id="map" class="div_full_height"> </div>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 div_full_height div_borders">
+        <p> Espécies Presentes: </p>
+      </div>
+    </div>
+    <div id="logs_div" class="row div_borders"> 
+      <p id="log">LOG:</p>
+    </div>
+    
+  </div>
+    
+    
   </body>
 </html>
+<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>

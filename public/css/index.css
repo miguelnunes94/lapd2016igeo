@@ -2,7 +2,34 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	
+}
+
+#menu_div{
+	height: 5%;
+}
+#main_div{
+	height: 80%;
+}
+#logs_div{
+	height: 15%;
+}
+.div_full_height {
+	height: 100%;
+}
+#google_maps_div{
+	background-color: gray;
 }
 #map {
-	height: 100%;
+	border-width: 2px;
+	border-radius: 2px;
+	bord
+}
+
+.div_borders{
+	border:solid;
+	border-width: 5px;
+	border-color: gray;
+	border-radius: 15px;
+
 }

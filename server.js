@@ -34,6 +34,12 @@ app.post('/login', urlencodedParser, function(req, res){
   	res.redirect('/');
 });
 
+/* GET LOGOUT*/
+app.get('/logout', function(req, res){
+	req.session.loggedin=false;
+	res.redirect('/');
+});
+
 /* POST REGISTER */
 app.post('/register', urlencodedParser, function(req, res){
 	
