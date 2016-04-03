@@ -10,6 +10,7 @@ function initMap() {
     if (navigator.geolocation) {
 		appendLog('geolocation on');
 	}
+	waitingDialog.show('Requesting your location...');
 	getUserLocation();
 
 };
@@ -17,7 +18,7 @@ function initMap() {
 /* obter a localização do user e atualizar mapa*/
 function getUserLocation(){
 	if (navigator.geolocation) {
-	    navigator.geolocation.getCurrentPosition(sucessUserLocation,errorUserLocation,{timeout:20000});
+	    navigator.geolocation.getCurrentPosition(sucessUserLocation,errorUserLocation,{ timeout: 5000, enableHighAccuracy: true, maximumAge: 90000 });
 	 }else {
 	 	appendLog('geolocation off');
 	 }
@@ -36,7 +37,7 @@ function sucessUserLocation(position){
 
 	// To add the marker to the map, call setMap();
 	marker.setMap(map);
-
+	waitingDialog.hide();
 	/* == TRACKING ==*/
 	var options;
 	options = {
@@ -48,14 +49,16 @@ function sucessUserLocation(position){
 };
 
 /* chamada quando à um erro ao receber a localização do google*/
-function errorUserLocation(){
-	appendLog('timetout user location');
+function errorUserLocation(err){
+	appendLog(err.message);
 	getUserLocation();
+	//window.location.replace('/');
 };
 
 /* chamada quando o user muda de localização */
 function success(pos) {
-  appendLog('User moved => lat: '+pos.coords.latitude+' long: '+pos.coords.longitude);
+  appendLog('Sua posição atual é: Latitude : ' + crd.latitude + 'Longitude: ' + crd.longitude  
+  	+ 'Mais ou menos ' + crd.accuracy + ' metros.');
 };
 
 /* chamada quando dá erro ao pedir para fazer tracking do user */
@@ -67,7 +70,7 @@ function error(err) {
 /* manda mensagens para aquele div no fim da página que diz: LOG*/
 function appendLog(msg){
 	lognum++;
-	$("#log").text($("#log").text()+'\t|#'+lognum+': '+msg+'|');
+	$("#log").text($("#log").text()+'\t|#'+lognum+' '+arguments.callee.caller.name+': '+msg+'|');
 }
 
 /* adicionar listeners e isso*/
@@ -76,4 +79,84 @@ function setup(){
 		window.location.replace("/logout");
 	});
 };
+
 $(setup);
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Module for displaying "Waiting for..." dialog using Bootstrap
+ *
+ * @author Eugene Maslovich <ehpc@em42.ru>
+ */
+
+var waitingDialog = waitingDialog || (function ($) {
+    'use strict';
+
+	// Creating modal dialog's DOM
+	var $dialog = $(
+		'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+		'<div class="modal-dialog modal-m">' +
+		'<div class="modal-content">' +
+			'<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
+			'<div class="modal-body">' +
+				'<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+			'</div>' +
+			'<div class="modal-body"><p>If it takes too long please refresh </p></div>' +
+		'</div></div></div>');
+
+	return {
+		/**
+		 * Opens our dialog
+		 * @param message Custom message
+		 * @param options Custom options:
+		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
+		 */
+		show: function (message, options) {
+			// Assigning defaults
+			if (typeof options === 'undefined') {
+				options = {};
+			}
+			if (typeof message === 'undefined') {
+				message = 'Loading';
+			}
+			var settings = $.extend({
+				dialogSize: 'm',
+				progressType: '',
+				onHide: null // This callback runs after the dialog was hidden
+			}, options);
+
+			// Configuring dialog
+			$dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+			$dialog.find('.progress-bar').attr('class', 'progress-bar');
+			if (settings.progressType) {
+				$dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+			}
+			$dialog.find('h3').text(message);
+			// Adding callbacks
+			if (typeof settings.onHide === 'function') {
+				$dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+					settings.onHide.call($dialog);
+				});
+			}
+			// Opening dialog
+			$dialog.modal();
+		},
+		/**
+		 * Closes dialog
+		 */
+		hide: function () {
+			$dialog.modal('hide');
+		}
+	};
+
+})(jQuery);
