@@ -66,7 +66,7 @@ app.get('/api/getSpeciesFromLocation', function(req, res){
 	  }
 	  client.query("select scientificname, nomevulgar, species.specieid "
 	  	+"from species,	("
-	  			+"select specieID " 
+	  			+"select distinct specieID " 
 	  			+"from locations "
 	  			+"where st_covers(location, ST_GeographyFromText('SRID=4326;POINT("+lat+" "+long+")'))"
 	  			+") loc where species.specieid=loc.specieid;", function(err, result) {

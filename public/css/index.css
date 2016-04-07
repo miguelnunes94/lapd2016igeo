@@ -2,7 +2,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-
+	background-color: gray;
 }
 #navbar {
 	background-color: #f8f8f8;
@@ -12,30 +12,25 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
-#main_div{
-	height: 75%;
-}
-#logs_div{
-	height: 15%;
-}
 .div_full_height {
 	height: 100%;
 }
-#google_maps_div{
-	background-color: gray;
+#main_div{
+	height: 75%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
 }
 #map {
 	border-width: 2px;
 	border-radius: 2px;
-	bord
+	width: 100%;
 }
 
 .div_borders{
 	border:solid;
 	border-width: 5px;
 	border-color: gray;
-	border-radius: 15px;
-
 }
 
 .container-fluid{

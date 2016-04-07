@@ -8,7 +8,7 @@ function initMap() {
         zoom: 15
     });
     if (navigator.geolocation) {
-		appendLog('geolocation on');
+		log('geolocation on');
 	}
 	waitingDialog.show('Requesting your location...');
 	getUserLocation();
@@ -20,13 +20,13 @@ function getUserLocation(){
 	if (navigator.geolocation) {
 	    navigator.geolocation.getCurrentPosition(sucessUserLocation,errorUserLocation,{ timeout: 5000, enableHighAccuracy: true, maximumAge: 90000 });
 	 }else {
-	 	appendLog('geolocation off');
+	 	log('geolocation off');
 	 }
 };
 
 /* chamada quando recebemos a localização do goole*/
 function sucessUserLocation(position){
-	appendLog('geolocation received');
+	log('geolocation received');
 	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	map.setCenter(initialLocation);
 	console.log(position);
@@ -46,33 +46,33 @@ function sucessUserLocation(position){
 	  maximumAge: 0
 	};
 	navigator.geolocation.watchPosition(success, error, options);
-	appendLog("coords: "+position.coords.latitude + " " + position.coords.longitude);
+	log("coords: "+position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
 };
 
 /* chamada quando à um erro ao receber a localização do google*/
 function errorUserLocation(err){
-	appendLog(err.message);
+	log(err.message);
 	getUserLocation();
 	//window.location.replace('/');
 };
 
 /* chamada quando o user muda de localização */
 function success(crd) {
-  appendLog('Sua posição atual é: Latitude : ' + crd.latitude + 'Longitude: ' + crd.longitude  
+  log('Sua posição atual é: Latitude : ' + crd.latitude + 'Longitude: ' + crd.longitude  
   	+ 'Mais ou menos ' + crd.accuracy + ' metros.');
 };
 
 /* chamada quando dá erro ao pedir para fazer tracking do user */
 function error(err) {
-	appendLog('ERROR(' + err.code + '): ' + err.message);
+	log('ERROR(' + err.code + '): ' + err.message);
   	console.warn('ERROR(' + err.code + '): ' + err.message);
 };
 
 /* manda mensagens para aquele div no fim da página que diz: LOG*/
-function appendLog(msg){
+function log(msg){
 	lognum++;
-	$("#log").text($("#log").text()+'\t|#'+lognum+' '+arguments.callee.caller.name+': '+msg+'|');
+	console.log('\t|#'+lognum+' '+arguments.callee.caller.name+': '+msg+'|');
 }
 
 /* adicionar listeners e isso*/
@@ -92,9 +92,15 @@ function loadSpeciesFromLocation(lat, long){
 	}).done(function (data){
 		console.log(data);
 		$("#showSpecies").text("");
-		data.result.forEach(function(res){
-			$("#showSpecies").text($("#showSpecies").text()+"<br>"+res.nomevulgar.trim() +res.scientificname.trim());
-
+		/*data.result.sort(function(a, b){
+			return -(a.scientificname.trim().length+a.nomevulgar.trim().length)+(b.scientificname.trim().length+b.nomevulgar.trim().length);
+		});*/
+		data.result.forEach(function(res, i){
+			var cls = "primary";
+			if(i%2==0)
+ 				cls = "success";
+			i++;
+			$("#showSpecies").append('<button type="button" class="btn btn-'+cls+'">'+res.scientificname.trim()+'('+res.nomevulgar.trim()+')</button>');
 		});
 	});
 }
