@@ -100,7 +100,24 @@ function loadSpeciesFromLocation(lat, long){
 			if(i%2==0)
  				cls = "success";
 			i++;
-			$("#showSpecies").append('<button type="button" class="btn btn-'+cls+'">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</button>');
+			$("#showSpecies").append('<button data-toggle="modal" data-target="#modal_'+res.specieid+'" type="button" class="showInfo btn btn-'+cls+'">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</button>');
+			
+			$("#showSpecies").append('<div id="modal_'+res.specieid+'" class="modal fade" role="dialog">'+
+				  +'<div class="modal-dialog">'
+				    +'<div class="modal-content">'
+				     +'<div class="modal-header">'
+				        +'<button type="button" class="close" data-dismiss="modal">&times;</button>'
+				        +'<h4 class="modal-title">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</h4>'
+				      +'</div>'
+				      +'<div class="modal-body">'
+				        +'<p>FALTA IR AO GBIFES BUSCAR A INFO E A IMAGEM PARA POR AQUI!</p>'
+				      +'</div>'
+				      +'<div class="modal-footer">'
+				        +'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
+				      +'</div>'
+				    +'</div>'
+				  +'</div>'
+				+'</div>');
 		});
 	});
 }
