@@ -100,7 +100,7 @@ function loadSpeciesFromLocation(lat, long){
 			if(i%2==0)
  				cls = "success";
 			i++;
-			$("#showSpecies").append('<button type="button" class="btn btn-'+cls+'">'+res.scientificname.trim()+'('+res.nomevulgar.trim()+')</button>');
+			$("#showSpecies").append('<button type="button" class="btn btn-'+cls+'">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</button>');
 		});
 	});
 }
