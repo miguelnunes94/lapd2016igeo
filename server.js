@@ -10,9 +10,32 @@ app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized:
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
 
-				
+/*
+//POSTGRES
+var pg = require('pg');
+var conString = "postgres://postgres:12345@localhost/postgres";
+var client = new pg.Client(conString);
 
-	/*  RESPOSTAS AOS PEDIDOS REST */
+// TESTE POSTGRESQL CONNECTION
+console.log('TEST POSTGRESQL CONNECTION');
+client.connect(function(err) {
+  if(err) {
+    return console.error('could not connect to postgres', err);
+  }
+  client.query('SELECT * FROM testeTable;', function(err, result) {
+    if(err) {
+      return console.error('error running query', err);
+    }
+    console.log(result.rows);
+    client.end();
+    console.log('Done');
+  });
+});
+*/
+
+/*========================================================================*/
+
+/*  RESPOSTAS AOS PEDIDOS REST */
 
 /*HOMEPAGE*/
 app.get('/', function (req, res) {	
@@ -49,7 +72,9 @@ app.post('/register', urlencodedParser, function(req, res){
   	res.redirect('/');
 });
 
-	/* INICIAR O SERVIDOR */
+
+/*========================================================================*/
+/* INICIAR O SERVIDOR */
 var server = app.listen(3000, function () {
 
   var host = server.address().address
