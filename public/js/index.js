@@ -46,6 +46,8 @@ function sucessUserLocation(position){
 	  maximumAge: 0
 	};
 	navigator.geolocation.watchPosition(success, error, options);
+	appendLog("coords: "+position.coords.latitude + " " + position.coords.longitude);
+	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
 };
 
 /* chamada quando à um erro ao receber a localização do google*/
@@ -56,7 +58,7 @@ function errorUserLocation(err){
 };
 
 /* chamada quando o user muda de localização */
-function success(pos) {
+function success(crd) {
   appendLog('Sua posição atual é: Latitude : ' + crd.latitude + 'Longitude: ' + crd.longitude  
   	+ 'Mais ou menos ' + crd.accuracy + ' metros.');
 };
@@ -79,6 +81,23 @@ function setup(){
 		window.location.replace("/logout");
 	});
 };
+
+/*load bichos para uma localização*/
+function loadSpeciesFromLocation(lat, long){
+	var species ;
+	$.ajax({
+		method: "GET",
+		url: "/api/getSpeciesFromLocation",
+		data: {lat: lat, long:long}
+	}).done(function (data){
+		console.log(data);
+		$("#showSpecies").text("");
+		data.result.forEach(function(res){
+			$("#showSpecies").text($("#showSpecies").text()+"<br>"+res.nomevulgar.trim() +res.scientificname.trim());
+
+		});
+	});
+}
 
 $(setup);
 

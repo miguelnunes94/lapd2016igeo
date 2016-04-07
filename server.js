@@ -10,28 +10,11 @@ app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized:
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
 
-/*
+
 //POSTGRES
 var pg = require('pg');
 var conString = "postgres://postgres:12345@localhost/postgres";
-var client = new pg.Client(conString);
 
-// TESTE POSTGRESQL CONNECTION
-console.log('TEST POSTGRESQL CONNECTION');
-client.connect(function(err) {
-  if(err) {
-    return console.error('could not connect to postgres', err);
-  }
-  client.query('SELECT * FROM testeTable;', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log(result.rows);
-    client.end();
-    console.log('Done');
-  });
-});
-*/
 
 /*========================================================================*/
 
@@ -72,6 +55,30 @@ app.post('/register', urlencodedParser, function(req, res){
   	res.redirect('/');
 });
 
+/* GET especie para uma localizacao*/
+app.get('/api/getSpeciesFromLocation', function(req, res){
+	var lat = req.query.lat;
+	var long = req.query.long;
+	var client = new pg.Client(conString);
+	client.connect(function(err) {
+	  if(err) {
+	    return console.error('could not connect to postgres', err);
+	  }
+	  client.query("select scientificname, nomevulgar, species.specieid "
+	  	+"from species,	("
+	  			+"select specieID " 
+	  			+"from locations "
+	  			+"where st_covers(location, ST_GeographyFromText('SRID=4326;POINT("+lat+" "+long+")'))"
+	  			+") loc where species.specieid=loc.specieid;", function(err, result) {
+	    if(err) {
+	      return console.error('error running query', err);
+	    }
+	    res.setHeader('Content-Type', 'application/json');
+    	res.send(JSON.stringify({ lat: lat, long: long, result: result.rows}));
+    	client.end();
+	  });
+	});
+});
 
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
