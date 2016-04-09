@@ -1,5 +1,6 @@
-var map;
+﻿var map;
 var lognum=0;
+var mapDraw;
 /* inicia o map, esta função é chamada pela callback do google maps*/
 function initMap() {
 	
@@ -7,6 +8,7 @@ function initMap() {
         center: {lat: 41.1778751, lng: -8.597915999999941},
         zoom: 15
     });
+    enableMapDraw();
     if (navigator.geolocation) {
 		log('geolocation on');
 	}
@@ -14,6 +16,33 @@ function initMap() {
 	getUserLocation();
 
 };
+
+/* activar a API de desenhos no mapa */
+function enableMapDraw(){
+	new google.maps.drawing.DrawingManager({
+		drawingMode: google.maps.drawing.OverlayType.MARKER,
+		drawingControl: true, //TODO: Mudar isto para False para desactivar os controlos manuais.
+		drawingControlOptions: {
+			position: google.maps.ControlPosition.TOP_CENTER,
+			drawingModes: [
+				google.maps.drawing.OverlayType.MARKER,
+				google.maps.drawing.OverlayType.CIRCLE,
+				google.maps.drawing.OverlayType.POLYGON,
+				google.maps.drawing.OverlayType.POLYLINE,
+				google.maps.drawing.OverlayType.RECTANGLE
+			]
+		},
+		circleOptions: {
+			fillColor: '#ffff00',
+			fillOpacity: 1,
+			strokeWeight: 5,
+			clickable: false,
+			editable: true,
+			zIndex: 1
+		}
+	});
+	drawingManager.setMap(map);
+}
 
 /* obter a localização do user e atualizar mapa*/
 function getUserLocation(){
