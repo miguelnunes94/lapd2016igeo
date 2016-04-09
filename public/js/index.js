@@ -121,17 +121,7 @@ function loadSpeciesFromLocation(lat, long){
 		});
 	});
 }
-
 $(setup);
-
-
-
-
-
-
-
-
-
 
 
 /**
