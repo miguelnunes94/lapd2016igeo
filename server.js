@@ -13,7 +13,7 @@ app.use(express.static('public'));
 
 //POSTGRES
 var pg = require('pg');
-var conString = "postgres://postgres:12345@localhost/postgres";
+var conString = String(process.env.DATABASE_URL || "postgres://postgres:12345@localhost/postgres");
 
 
 /*========================================================================*/
@@ -121,6 +121,7 @@ app.get('/api/getSpeciesFromLocation', function(req, res){
 
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
+var port = Number(process.env.PORT || 3000);
 var server = app.listen(3000, function () {
 
 	var host = server.address().address
