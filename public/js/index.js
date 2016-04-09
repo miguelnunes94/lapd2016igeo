@@ -1,4 +1,4 @@
-﻿var map;
+var map;
 var lognum=0;
 var mapDraw;
 /* inicia o map, esta função é chamada pela callback do google maps*/
@@ -150,6 +150,47 @@ function loadSpeciesFromLocation(lat, long){
 		});
 	});
 }
+
+/*load localizacao para uma especie, dado o seu id*/
+function loadLocationFromSpecies(especie){
+	if(especie==undefined)especie=1;//TODO: TEST CODE: Remove this line!!!
+	$.ajax( {
+		method: "GET",
+		url: "/api/getLocationFromSpecies",
+		data: {especie: especie}
+	} ).done( function(data){
+		console.log(data);
+		data.result.forEach( function(res,i){
+			console.log(i+". "+res);
+		} );
+		paintPoly();
+	} );
+}
+
+/*converter coordenadas de um array para coordenadas do google (lat+lng).*/
+function ctoc(arr_c){
+	var ret = [];
+	for(var i=0;i<arr_c.length;i+=2){
+		ret.push( {lat: arr_c[i], lng: arr_c[i+1]} );
+	}
+	return ret;
+}
+
+/*pintar poligonos*/
+function paintPoly(coords_real){
+	var N =[38.410695633953928, -8.9952367211616338, 38.498230970741282, -9.020671694551849, 38.475719880830212, -9.1320904314978346, 38.388218770143105, -9.1065232425462455, 38.410695633953928, -8.9952367211616338];
+	var coords = ctoc(N);
+	var poly = new google.maps.Polygon({
+		paths: coords,
+		strokeColor: '#FF0000',
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: '#FF0000',
+		fillOpacity: 0.35
+	});
+	poly.setMap(map);
+}
+
 $(setup);
 
 
