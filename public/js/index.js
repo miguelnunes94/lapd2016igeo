@@ -19,7 +19,7 @@ function initMap() {
 
 /* activar a API de desenhos no mapa */
 function enableMapDraw(){
-	new google.maps.drawing.DrawingManager({
+	mapDraw = new google.maps.drawing.DrawingManager({
 		drawingMode: google.maps.drawing.OverlayType.MARKER,
 		drawingControl: true, //TODO: Mudar isto para False para desactivar os controlos manuais.
 		drawingControlOptions: {
@@ -41,7 +41,7 @@ function enableMapDraw(){
 			zIndex: 1
 		}
 	});
-	drawingManager.setMap(map);
+	mapDraw.setMap(map);
 }
 
 /* obter a localização do user e atualizar mapa*/
