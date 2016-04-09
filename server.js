@@ -50,48 +50,35 @@ app.get('/logout', function(req, res){
 
 /* POST REGISTER */
 app.post('/register', urlencodedParser, function(req, res){
-var qs = require('querystring');
+	var username = req.body.username;
+	var email = req.body.email;
+	var password = req.body.password;
+	var confirm_password = req.body.confirm_password;
 
-    if (req.method == 'POST') {
-        var body = '';
 
-        req.on('data', function (data) {
-            body += data;
-
-            // Too much POST data, kill the connection!
-            // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-            if (body.length > 1e6)
-                req.connection.destroy();
-        });
-
-        req.on('end', function () {
-            var post = qs.parse(body);
-           	window.alert(post.username);   
-           	     });
-    }
-
-/*	if (password != confirm_password) 
+	if (password != confirm_password) 
 	{
 		req.session.loggedin=false;
 		res.redirect('/');
 	}
 	else 
 	{
+		var client = new pg.Client(conString);		
+		client.connect(function(err) {
+			if(err) {
+				return console.error('could not connect to postgres', err);
+			}
+			client.query("INSERT INTO users(username, password,email) values($1, $2, $3)" , function(err, result) {
+				if(err) {
+					return console.error('error running query', err);
+				}				
+				client.end();
+			});
+		});
 		req.session.loggedin=true;
 		res.redirect('/');
-	}*/
-	/*var client = new pg.Client(conString);
+	}
 	
-	client.connect(function(err) {
-		if(err) {
-			return console.error('could not connect to postgres', err);
-		}
-		client.query("INSERT INTO users(username, password,email) values("$1","$2","$3")");
-		client.end();
-	});*/
-	
-	req.session.loggedin=true;
-		res.redirect('/');
 });
 
 /* GET especie para uma localizacao*/
