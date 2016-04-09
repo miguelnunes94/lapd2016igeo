@@ -5,7 +5,15 @@
     "start": "node server.js"
   },
   "dependencies": {
+
     "express": "latest",
     "passport-local": "^1.0.0"
+    "body-parser": "^1.15.0",
+    "express": "latest",
+    "express-session": "^1.13.0",
+    "pg": "^4.5.3"
+  },
+  "engines": {
+    "node": "5.10.1"
   }
 }
