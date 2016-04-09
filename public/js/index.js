@@ -2,7 +2,7 @@ var map;
 var lognum=0;
 /* inicia o map, esta função é chamada pela callback do google maps*/
 function initMap() {
-	window.alert("heroku on?");
+	
 	map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 41.1778751, lng: -8.597915999999941},
         zoom: 15
