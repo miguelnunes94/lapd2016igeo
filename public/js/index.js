@@ -181,28 +181,31 @@ function clearMap(){
 
 /*pintar quadrado de 'fog'*/
 var fogs = [];
-//var fx = 40.0750353158979, fy = -8.0468964918851;
-var fx = 40.0750, fy = -8.04690;
-/*var fo = [
-		[0.0214878739261,0.11441520918122], //Bottom-Left
-		[0.1091236583546,0.08912543759868], //Bottom-Right
-		[0.0876357844285,-0.02528977158254], //Top-Right
-		[0,0] //Top-Left
-	];*/
-var fo = [
-		[0.0215, 0.1144], //Bottom-Left
-		[0.1091, 0.08913], //Bottom-Right
-		[0.0876,-0.02529], //Top-Right
-		[0.0000, 0.00000] //Top-Left
+var ff=0.1164, fa=10.6365;
+var fo=[
+		[0,ff],
+		[ff,ff],
+		[ff,0],
+		[0,0]
 	];
-var fox = -15.8, foy = -22;
+
+var dtor = Math.PI/180;
+fo[0][0] = ff*Math.sin(fa*dtor);
+fo[0][1] = ff*Math.cos(fa*dtor);
+
+ff=0.0912, fa=-16.1522;
+fo[2][1] = ff*Math.sin(fa*dtor);
+fo[2][1] = ff*Math.cos(fa*dtor);
+
+fo[1][0] = fo[0][0]+fo[2][0];
+fo[1][1] = fo[0][1]+fo[2][1];
+var fx = 41.75010275074586,
+	fy = -10.4360930621624;
 var flx = 34, fly = 57;
 //x:0,y:0 to x:34,y:57
 function paintFog(x,y,f){
 	if(f==undefined)f=0.5;
 	if(f>0){
-		x+=fox;
-		y+=foy;
 		var sx = fx-y*fo[2][0]+x*fo[0][0],
 			sy = fy-y*fo[2][1]+x*fo[0][1];
 		var P = [];
@@ -244,15 +247,16 @@ function fogInner(f){
 /*Test clicking coordinates.*/
 function addClick(){
 	google.maps.event.addListener(map, 'click', function(e) {
-		console.log(ccc.lat()+","+ccc.lng());
+		console.log(e.latLng.lat()+","+e.latLng.lng());
 	});
 }
 
 /*test fog*/
-function testFog(f){
+function testFog(f,ff){
 	clearFog();
 	clearMap();
 	fogBorder(f);
+	fogInner(ff);
 	loadLocationFromSpecies(202);
 }
 
