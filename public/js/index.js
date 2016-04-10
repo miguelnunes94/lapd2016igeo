@@ -194,7 +194,7 @@ fo[0][0] = ff*Math.sin(fa*dtor);
 fo[0][1] = ff*Math.cos(fa*dtor);
 
 ff=0.0912, fa=-16.1522;
-fo[2][1] = ff*Math.sin(fa*dtor);
+fo[2][0] = ff*Math.sin(fa*dtor);
 fo[2][1] = ff*Math.cos(fa*dtor);
 
 fo[1][0] = fo[0][0]+fo[2][0];
