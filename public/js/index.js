@@ -139,7 +139,8 @@ function loadSpeciesFromLocation(lat, long){
 				        +'<h4 class="modal-title">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</h4>'
 				      +'</div>'
 				      +'<div class="modal-body">'
-				        +'<p><button id="'+res.specieid+'">Ver no Mapa</button>FALTA IR AO GBIFES BUSCAR A INFO E A IMAGEM PARA POR AQUI!</p>'
+						+'<button id="btn_'+res.specieid+'">Ver no Mapa</button><br/>'
+				        +'<p>FALTA IR AO GBIFES BUSCAR A INFO E A IMAGEM PARA POR AQUI!</p>'
 				      +'</div>'
 				      +'<div class="modal-footer">'
 				        +'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
@@ -186,7 +187,7 @@ function ctoc(arr_c){
 var polys = [];
 function paintPoly(coords_real){
 	//var N =[38.410695633953928, -8.9952367211616338, 38.498230970741282, -9.020671694551849, 38.475719880830212, -9.1320904314978346, 38.388218770143105, -9.1065232425462455, 38.410695633953928, -8.9952367211616338];
-	var coords = ctoc(coord_real);
+	var coords = ctoc(coords_real);
 	var poly = new google.maps.Polygon({
 		paths: coords,
 		strokeColor: '#FF0000',
