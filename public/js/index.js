@@ -147,13 +147,17 @@ function loadSpeciesFromLocation(lat, long){
 				    +'</div>'
 				  +'</div>'
 				+'</div>');
+			$("#modal_"+res.specieid).addEventListener("click",function(){
+				clearMap();
+				loadLocationFromSpecies(res.specieid);
+			})
 		});
 	});
 }
 
 /*load localizacao para uma especie, dado o seu id*/
 function loadLocationFromSpecies(especie){
-	if(especie==undefined)especie=1;//TODO: TEST CODE: Remove this line!!!
+	//if(especie==undefined)especie=1;//TODO: TEST CODE: Remove this line!!!
 	$.ajax( {
 		method: "GET",
 		url: "/api/getLocationFromSpecies",
@@ -161,25 +165,28 @@ function loadLocationFromSpecies(especie){
 	} ).done( function(data){
 		console.log(data);
 		data.result.forEach( function(res,i){
-			console.log(i+". "+res);
+			var poly;
+			var obj = jQuery.parseJSON(res.st_asgeojson);
+			poly = obj.coordinates[0];
+			paintPoly(poly);
 		} );
-		paintPoly();
 	} );
 }
 
-/*converter coordenadas de um array para coordenadas do google (lat+lng).*/
+/*converter coordenadas de um array do loadLocationFromSpecies para coordenadas do google (lat+lng).*/
 function ctoc(arr_c){
 	var ret = [];
-	for(var i=0;i<arr_c.length;i+=2){
-		ret.push( {lat: arr_c[i], lng: arr_c[i+1]} );
+	for(var i=0;i<arr_c.length;i++){
+		ret.push( {lat: arr_c[i][0], lng: arr_c[i][1]} );
 	}
 	return ret;
 }
 
 /*pintar poligonos*/
+var polys = [];
 function paintPoly(coords_real){
-	var N =[38.410695633953928, -8.9952367211616338, 38.498230970741282, -9.020671694551849, 38.475719880830212, -9.1320904314978346, 38.388218770143105, -9.1065232425462455, 38.410695633953928, -8.9952367211616338];
-	var coords = ctoc(N);
+	//var N =[38.410695633953928, -8.9952367211616338, 38.498230970741282, -9.020671694551849, 38.475719880830212, -9.1320904314978346, 38.388218770143105, -9.1065232425462455, 38.410695633953928, -8.9952367211616338];
+	var coords = ctoc(coord_real);
 	var poly = new google.maps.Polygon({
 		paths: coords,
 		strokeColor: '#FF0000',
@@ -189,6 +196,15 @@ function paintPoly(coords_real){
 		fillOpacity: 0.35
 	});
 	poly.setMap(map);
+	polys.push(poly);
+}
+
+/*limpar os poligonos para fora do mapa*/
+function clearMap(){
+	for(var i=0;i<polys.length;i++){
+		polys[i].setMap(null);
+	}
+	polys=[];
 }
 
 $(setup);
