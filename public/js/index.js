@@ -208,6 +208,67 @@ function clearMap(){
 	polys=[];
 }
 
+/*pintar quadrado de 'fog'*/
+var fogs = [];
+var fx = 40.0750353158979, fy = -8.0468964918851;
+var fo = [
+		[0.0214878739261,0.11441520918122], //Bottom-Left
+		[0.1091236583546,0.08912543759868], //Bottom-Right
+		[0.0876357844285,-0.02528977158254], //Top-Right
+		[0,0] //Top-Left
+	];
+var fox = -15.99, foy = -22;
+//x:0,y:0 to x:34,y:57
+function paintFog(x,y,f){
+	if(f==undefined)f=0.5;
+	if(f>0){
+		x+=fox;
+		y+=foy;
+		var sx = fx-y*fo[2][0]+x*fo[0][0],
+			sy = fy-y*fo[2][1]+x*fo[0][1];
+		var P = [];
+		for(var i=0;i<5;i++){
+			var n=i%4;
+			P.push( {lat: sx+fo[n][0], lng: sy+fo[n][1]} );
+		}
+		var fog = new google.maps.Polygon({
+			paths: P,
+			strokeColor: '#000000',
+			strokeOpacity: f,
+			strokeWeight: 1,
+			fillColor: '#000000',
+			fillOpacity: f
+		});
+		fog.setMap(map);
+		fogs.push(fog);
+	}
+}
+
+/*Border à volta do país todo com fog:*/
+function fogBorder(f){
+	if(f==undefined)f=1;
+	for(var y=0;y<58;y++)
+		for(var x=0;x<35;x++)
+			if(x==0||x==34||y==0||y==57)
+				paintFog(x,y,f);
+}
+
+/*test fog*/
+function testFog(f){
+	clearFog();
+	clearMap();
+	fogBorder(f);
+	loadLocationFromSpecies(202);
+}
+
+/*limpar TODO o fog*/
+function clearFog(){
+	for(var i=0;i<fogs.length;i++){
+		fogs[i].setMap(null);
+	}
+	fogs=[];
+}
+
 $(setup);
 
 
