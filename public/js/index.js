@@ -217,7 +217,9 @@ var fo = [
 		[0.0876357844285,-0.02528977158254], //Top-Right
 		[0,0] //Top-Left
 	];
-var fox = -15.99, foy = -22;
+var fox = -15.8, foy = -22;
+//var flx = 34, fly = 57;
+var flx = 33, fly = 56;
 //x:0,y:0 to x:34,y:57
 function paintFog(x,y,f){
 	if(f==undefined)f=0.5;
@@ -247,9 +249,18 @@ function paintFog(x,y,f){
 /*Border à volta do país todo com fog:*/
 function fogBorder(f){
 	if(f==undefined)f=1;
-	for(var y=0;y<58;y++)
-		for(var x=0;x<35;x++)
-			if(x==0||x==34||y==0||y==57)
+	for(var y=0;y<=fly;y++)
+		for(var x=0;x<=flx;x++)
+			if(x==0||x==flx||y==0||y==fly)
+				paintFog(x,y,f);
+}
+
+/*Tudo EXCEPTO a border.*/
+function fogInner(f){
+	if(f==undefined)f=0.5;
+	for(var y=0;y<=fly;y++)
+		for(var x=0;x<=flx;x++)
+			if(x!=0&&x!=34&&y!=0&&y!=57)
 				paintFog(x,y,f);
 }
 
