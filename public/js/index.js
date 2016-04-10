@@ -92,6 +92,8 @@ function loadSpeciesFromLocation(lat, long){
 	}).done(function (data){
 		console.log(data);
 		$("#showSpecies").text("");
+		$("#showSpecies").prepend('<button id="testFogBtn">Test Fog Grid</button>');
+		$("#testFogBtn").bind("click",testFog);
 		/*data.result.sort(function(a, b){
 			return -(a.scientificname.trim().length+a.nomevulgar.trim().length)+(b.scientificname.trim().length+b.nomevulgar.trim().length);
 		});*/
@@ -264,7 +266,7 @@ function fogInner(f){
 	if(f==undefined)f=0.5;
 	for(var y=0;y<=fly;y++)
 		for(var x=0;x<=flx;x++)
-			if(x!=0&&x!=34&&y!=0&&y!=57)
+			if(x!=0&&x!=flx&&y!=0&&y!=fly)
 				paintFog(x,y,f);
 }
 
