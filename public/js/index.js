@@ -139,7 +139,7 @@ function loadSpeciesFromLocation(lat, long){
 				        +'<h4 class="modal-title">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</h4>'
 				      +'</div>'
 				      +'<div class="modal-body">'
-				        +'<p>FALTA IR AO GBIFES BUSCAR A INFO E A IMAGEM PARA POR AQUI!</p>'
+				        +'<p><button id="'+res.specieid+'">Ver no Mapa</button>FALTA IR AO GBIFES BUSCAR A INFO E A IMAGEM PARA POR AQUI!</p>'
 				      +'</div>'
 				      +'<div class="modal-footer">'
 				        +'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
@@ -147,10 +147,10 @@ function loadSpeciesFromLocation(lat, long){
 				    +'</div>'
 				  +'</div>'
 				+'</div>');
-			$("#modal_"+res.specieid).addEventListener("click",function(){
+			$("#btn_"+res.specieid).bind("click",function(){
 				clearMap();
 				loadLocationFromSpecies(res.specieid);
-			})
+			});
 		});
 	});
 }
