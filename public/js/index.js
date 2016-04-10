@@ -190,7 +190,9 @@ var fo=[
 
 var dtor = Math.PI/180;
 
-var ff1=0.1164, fa1=10.6365, ff2=0.0912, fa2=106.1522;
+var fmult = 2;
+
+var ff1=0.1128/fmult, fa1=10.6365, ff2=0.0914/fmult, fa2=106.1622;
 fo[0][0] = ff1*Math.sin(fa1*dtor);
 fo[0][1] = ff1*Math.cos(fa1*dtor);
 fo[2][0] = ff2*Math.sin(fa2*dtor);
@@ -206,7 +208,7 @@ function updMap(){
 	fo[1][0] = fo[0][0]+fo[2][0];
 	fo[1][1] = fo[0][1]+fo[2][1];
 	clearFog();
-	fogBorder(1);
+	fogBorder(0.5);
 	fogInner(0.5);
 }
 
@@ -221,10 +223,10 @@ function rdyUpdMap(){
 	$("#u_4").bind("change",function(){fa2=parseFloat($("#u_4").val());updMap();});
 }
 
-var fx = 41.75010275074586,
-	fy = -10.4360930621624;
-var flx = 34, fly = 57;
-//x:0,y:0 to x:34,y:57
+var fx = 41.66162721430806,
+	fy = -10.41229248046875;
+var flx = 35*fmult, fly = 57*fmult;
+//x:0,y:0 to x:35,y:57
 function paintFog(x,y,f){
 	if(f==undefined)f=0.5;
 	if(f>0){
@@ -274,11 +276,11 @@ function addClick(){
 }
 
 /*test fog*/
-function testFog(f,ff){
+function testFog(){
 	clearFog();
 	clearMap();
-	fogBorder(f);
-	fogInner(ff);
+	fogBorder(0.6);
+	fogInner();
 	loadLocationFromSpecies(202);
 }
 
