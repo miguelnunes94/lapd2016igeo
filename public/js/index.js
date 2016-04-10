@@ -8,7 +8,7 @@ function initMap() {
         center: {lat: 41.1778751, lng: -8.597915999999941},
         zoom: 15
     });
-    enableMapDraw();
+    //enableMapDraw();
     if (navigator.geolocation) {
 		log('geolocation on');
 	}
@@ -21,7 +21,7 @@ function initMap() {
 function enableMapDraw(){
 	mapDraw = new google.maps.drawing.DrawingManager({
 		drawingMode: google.maps.drawing.OverlayType.MARKER,
-		drawingControl: true, //TODO: Mudar isto para False para desactivar os controlos manuais.
+		drawingControl: false, //TODO: Mudar isto para False para desactivar os controlos manuais.
 		drawingControlOptions: {
 			position: google.maps.ControlPosition.TOP_CENTER,
 			drawingModes: [
@@ -262,6 +262,14 @@ function fogInner(f){
 		for(var x=0;x<=flx;x++)
 			if(x!=0&&x!=34&&y!=0&&y!=57)
 				paintFog(x,y,f);
+}
+
+/*Test clicking coordinates.*/
+function addClick(){
+	google.maps.event.addListener(map, 'click', function(e) {
+		console.log(e.latLng);
+		//marker = new google.maps.Marker({position: event.latLng, map: map});
+	});
 }
 
 /*test fog*/
