@@ -181,24 +181,46 @@ function clearMap(){
 
 /*pintar quadrado de 'fog'*/
 var fogs = [];
-var ff=0.1164, fa=10.6365;
 var fo=[
-		[0,ff],
-		[ff,ff],
-		[ff,0],
+		[0,1],
+		[1,1],
+		[1,0],
 		[0,0]
 	];
 
 var dtor = Math.PI/180;
-fo[0][0] = ff*Math.sin(fa*dtor);
-fo[0][1] = ff*Math.cos(fa*dtor);
 
-ff=0.0912, fa=-16.1522;
-fo[2][0] = ff*Math.sin(fa*dtor);
-fo[2][1] = ff*Math.cos(fa*dtor);
-
+var ff1=0.1164, fa1=10.6365, ff2=0.0912, fa2=106.1522;
+fo[0][0] = ff1*Math.sin(fa1*dtor);
+fo[0][1] = ff1*Math.cos(fa1*dtor);
+fo[2][0] = ff2*Math.sin(fa2*dtor);
+fo[2][1] = ff2*Math.cos(fa2*dtor);
 fo[1][0] = fo[0][0]+fo[2][0];
 fo[1][1] = fo[0][1]+fo[2][1];
+
+function updMap(){
+	fo[0][0] = ff1*Math.sin(fa1*dtor);
+	fo[0][1] = ff1*Math.cos(fa1*dtor);
+	fo[2][0] = ff2*Math.sin(fa2*dtor);
+	fo[2][1] = ff2*Math.cos(fa2*dtor);
+	fo[1][0] = fo[0][0]+fo[2][0];
+	fo[1][1] = fo[0][1]+fo[2][1];
+	clearFog();
+	fogBorder(1);
+	fogInner(0.5);
+}
+
+function rdyUpdMap(){
+	$("#showSpecies").prepend('X_L:<input type="text" id="u_1" value="0.1164"><br/>'+
+							  'X_A:<input type="text" id="u_2" value="10.6365"><br/>'+
+							  'Y_L:<input type="text" id="u_3" value="0.0912"><br/>'+
+							  'Y_A:<input type="text" id="u_4" value="106.1522"><br/>');
+	$("#u_1").bind("change",function(){ff1=parseFloat($("#u_1").val());updMap();});
+	$("#u_2").bind("change",function(){fa1=parseFloat($("#u_2").val());updMap();});
+	$("#u_3").bind("change",function(){ff2=parseFloat($("#u_3").val());updMap();});
+	$("#u_4").bind("change",function(){fa2=parseFloat($("#u_4").val());updMap();});
+}
+
 var fx = 41.75010275074586,
 	fy = -10.4360930621624;
 var flx = 34, fly = 57;
