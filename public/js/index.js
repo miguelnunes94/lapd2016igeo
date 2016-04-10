@@ -181,16 +181,22 @@ function clearMap(){
 
 /*pintar quadrado de 'fog'*/
 var fogs = [];
-var fx = 40.0750353158979, fy = -8.0468964918851;
-var fo = [
+//var fx = 40.0750353158979, fy = -8.0468964918851;
+var fx = 40.0750, fy = -8.04690;
+/*var fo = [
 		[0.0214878739261,0.11441520918122], //Bottom-Left
 		[0.1091236583546,0.08912543759868], //Bottom-Right
 		[0.0876357844285,-0.02528977158254], //Top-Right
 		[0,0] //Top-Left
+	];*/
+var fo = [
+		[0.0215, 0.1144], //Bottom-Left
+		[0.1091, 0.08913], //Bottom-Right
+		[0.0876,-0.02529], //Top-Right
+		[0.0000, 0.00000] //Top-Left
 	];
 var fox = -15.8, foy = -22;
-//var flx = 34, fly = 57;
-var flx = 33, fly = 56;
+var flx = 34, fly = 57;
 //x:0,y:0 to x:34,y:57
 function paintFog(x,y,f){
 	if(f==undefined)f=0.5;
