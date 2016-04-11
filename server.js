@@ -13,7 +13,7 @@ app.use(express.static('public'));
 
 //POSTGRES
 var pg = require('pg');
-var conString = "postgres://postgres:12345@localhost/postgres";
+var conString = String(process.env.DATABASE_URL || "postgres://postgres:12345@localhost/postgres");
 
 
 /*========================================================================*/
@@ -76,6 +76,7 @@ app.post('/register', urlencodedParser, function(req, res){
 });
 
 /* GET especie para uma localizacao*/
+//TODO: Verificar lat+long na query?
 app.get('/api/getSpeciesFromLocation', function(req, res){
 	var lat = req.query.lat;
 	var long = req.query.long;
@@ -100,9 +101,32 @@ app.get('/api/getSpeciesFromLocation', function(req, res){
 	});
 });
 
+/* GET localizacoes para uma especie*/
+//TODO: Verificar se 'especie' esta definido no query? E se existem areas para a especie (caso o utilizador tenha manipulado a pagina para fazer uma query que nao devia)?
+app.get('/api/getLocationFromSpecies', function(req, res){
+	var especie = req.query.especie;
+	var client = new pg.Client(conString);
+	client.connect(function(err) {
+		if(err) {
+			return console.error('could not connect to postgres', err);
+		}
+		client.query("select ST_AsGeoJSON(location) "
+			+"from locations "
+			+"where specieid="+especie+";", function(err, result) {
+				if(err) {
+					return console.error('error running query', err);
+				}
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify({ especie: especie, result: result.rows}));
+				client.end();
+			});
+	});
+});
+
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
-var server = app.listen(3000, function () {
+var port = Number(process.env.PORT || 3000);
+var server = app.listen(port, function () {
 
 	var host = server.address().address
 	var port = server.address().port
