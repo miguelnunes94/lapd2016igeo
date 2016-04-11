@@ -55,7 +55,6 @@ app.post('/register', urlencodedParser, function(req, res){
 	var password = req.body.password;
 	var confirm_password = req.body.confirm_password;
 
-
 	if (password != confirm_password) 
 	{
 		req.session.loggedin=false;
@@ -63,22 +62,17 @@ app.post('/register', urlencodedParser, function(req, res){
 	}
 	else 
 	{
-		var client = new pg.Client(conString);		
-		client.connect(function(err) {
-			if(err) {
-				return console.error('could not connect to postgres', err);
-			}
-			client.query("INSERT INTO users(username, password,email) values($1, $2, $3)" , function(err, result) {
-				if(err) {
-					return console.error('error running query', err);
-				}				
-				client.end();
-			});
+		var client = new pg.Client(conString);
+		client.connect();
+		var query = client.query("insert into users (username,password,email) "+ 
+			"values ('"+req.body.username+"','"+
+			req.body.email+"','"+req.body.password+"')");    
+		query.on("end", function (result){          
+			client.end(); 
+			req.session.loggedin=true;
+			res.redirect('/');
 		});
-		req.session.loggedin=true;
-		res.redirect('/');
 	}
-	
 });
 
 /* GET especie para uma localizacao*/
