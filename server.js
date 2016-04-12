@@ -4,11 +4,17 @@
 	var bodyParser = require('body-parser');
 	var session = require('express-session');
 	var app = express();
+	var passport = require('passport');
+	var LocalStrategy = require('passport-local').Strategy;
 	app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized: false}));
 
 // Create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
+
+//passaport
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //POSTGRES
@@ -36,6 +42,7 @@ app.post('/login', urlencodedParser, function(req, res){
    	//var username = req.body.username;
     //var password = req.body.password;
 
+    
     req.session.loggedin=true;
     res.redirect('/');
 });
