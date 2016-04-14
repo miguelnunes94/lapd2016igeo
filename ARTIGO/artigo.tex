@@ -1,0 +1,230 @@
+\documentclass[twocolumn,twoside,11pt,a4paper]{article}
+
+\usepackage[portuguese]{babel}  % portuguese
+\usepackage{graphicx}           % images: .png or .pdf w/ pdflatex; .eps w/ latex
+
+
+%% For iso-8859-1 (latin1), comment next line and uncomment the second line
+\usepackage[utf8]{inputenc}
+%\usepackage[latin1]{inputenc}
+
+\usepackage[T1]{fontenc}        % T1 fonts
+\usepackage{lmodern}            % fonts
+\usepackage[sc]{mathpazo}       % Use the Palatino font
+\linespread{1.05}               % Line spacing - Palatino needs more space between lines
+\usepackage{microtype}          % Slightly tweak font spacing for aesthetics
+\usepackage{url}                % urls
+\usepackage[hang, small, labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs}           % Horizontal rules in tables
+\usepackage{float}              % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{paralist}           % Used for the compactitem environment which makes bullet points with less space between them
+
+% geometry package
+\usepackage[outer=20mm,inner=20mm,vmargin=15mm,includehead,includefoot,headheight=15pt]{geometry}
+%% space between columns
+\columnsep 10mm
+
+\usepackage{abstract}           % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+% \usepackage{titlesec}           % Allows customization of titles
+% \renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+% \renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+% \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+% \titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{%
+    a4paper = true,              % use A4 paper 
+    bookmarks = true,            % make bookmarks 
+    colorlinks = true,           % false: boxed links; true: colored links
+    pdffitwindow = false,        % page fit to window when opened
+    pdfpagemode = UseNone,       % do not show bookmarks
+    pdfpagelayout = SinglePage,  % displays a single page
+    pdfpagetransition = Replace, % page transition
+    linkcolor=blue,              % hyperlink colors
+    urlcolor=blue,
+    citecolor=blue,
+    anchorcolor=green
+}
+
+\usepackage{indentfirst}         % indent also 1st paragraph
+
+\usepackage{fancyhdr}            % Headers and footers
+\pagestyle{fancy}                % pages have headers and footers
+\fancyhead{}                     % Blank out the default header
+\fancyfoot{}                     % Blank out the default footer
+\fancyhead[LO,RE]{Exploracafora} % Custom header text
+\fancyhead[RO,LE]{\thepage}      % Custom header text
+\fancyfoot[RO,LE]{Grupo 08, \today} % Custom footer text
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%\hyphenation{}                  % explicit hyphenation
+
+%----------------------------------------------------------------------------------------
+%	macro definitions
+%----------------------------------------------------------------------------------------
+
+% entities
+\newcommand{\class}[1]{{\normalfont\slshape #1\/}}
+\newcommand{\svg}{\class{SVG}}
+\newcommand{\scada}{\class{SCADA}}
+\newcommand{\scadadms}{\class{SCADA/DMS}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Exploracafora}} % Article title
+
+\author{Luís Pinto\\
+\small \texttt{ei12108@fe.up.pt}\\
+\and
+Miguel Nunes\\
+\small \texttt{ei12032@fe.up.pt}\\
+\and
+Rui Andrade\\
+\small \texttt{ei12010@fe.up.pt}
+\vspace{-5mm}
+}
+
+\date{\today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+\thispagestyle{plain}            % no headers in the first page
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+Exploracafora é uma aplicação web que visa a exploração do mapa de Portugal e da sua fauna e flora. O mapa começa encoberto e vai aparecendo à medida que o utilizador se desloca pelo terreno português conectado à aplicação através do seu telemóvel. No mapa é exibida informação sobre espécies existentes. A aplicação recorre a um conjunto de serviços do portal iGEO para obter as espécies que existem em cada região do mapa, Google Maps mostrar o mapa e uma API do portal GBIF para obter informação mais detalhada sobre cada espécie.
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\section{Introdução}\label{sec:intro}
+
+O projeto tem como objetivo o desenvolvimento de uma aplicação web que permite a exploração dinâmica de espécies de fauna e flora no território português. O desenvolvimento desta aplicação é motivado pela aprendizagem e descoberta dos diferentes elementos da natureza e do terreno português.
+
+Para além desta introdução, onde se caracterizou o problema abordado por este projeto, refere-se na Secção ~\ref{sec:sota} o estado da arte e são descritas aplicações que abordam a mesma temática. Na Secção ~\ref{sec:application} está descrita com mais detalhe a aplicação a desenvolver. Na Secção ~\ref{sec:datamodel} são abordadas as fontes de dados a utilizar para obter as diversas informações necessárias para representar o mapa e mostrar toda a informação sobre os seres vivos presentes na aplicação. De seguida na Secção ~\ref{sec:metod} está presente a metodologia a seguir no desenvolvimento do projeto.
+
+
+%------------------------------------------------
+
+\section{Estado da arte}\label{sec:sota}
+
+Existem várias aplicações que permitem a pesquisa de vários tipos de animais ou de plantas, normalmente estas aplicações mostram informação de uma dada espécie depois do utilizador introduzir o nome comum ou científico do animal que procura. Outras aplicações permitem a descoberta de animais exibindo fotografias com informação anexada dos animais. Estas aplicações focam-se normalmente em contextos como animais raros, marinhos, extintos, voadores, etc.
+
+O conceito da aplicação a desenvolver serão os seres vivos existentes no território português e ao contrário das aplicações existentes, esta foca-se na exploração, ou seja, o utilizador é convidado a viajar por Portugal para que possa explorar e ter conhecimento das espécies existentes em cada região, tornado assim a aquisição de conhecimento mais interativa e dinâmica.
+
+%------------------------------------------------
+
+\section{Exploracafora}\label{sec:application}
+
+A Exploracafora é uma aplicação que permite conjugar a visualização do mapa português com a interatividade de um jogo de exploração. Na aplicação existe um mapa no qual o utilizador observa a sua posição e tudo aquilo que o rodeia dentro de um raio pré-definido. À medida que a pessoa começa a deslocar-se o mapa vai mostrando todos os pontos importantes. No início do uso da aplicação todo o mapa encontra-se encoberto e é desvendado à medida que novas áreas são exploradas. Deste modo a aplicação torna-se interativa e dinâmica como se de um jogo se tratasse.
+
+O utilizador poderá encontrar na aplicação informação sobre plantas, insetos, aranhas, bivalves, gastrópodes, peixes, anfíbios, répteis e mamíferos existentes em Portugal. 
+
+\section{Fontes de dados}\label{sec:datamodel}
+
+Utilizar-se-ão várias fontes para reunir toda a informação necessária. Serão usados serviços do portal iGEO (informação Geográfica) para obter as espécies existentes num dado ponto de Portugal, estes serviços indicam para cada ser vivo as regiões de Portugal onde estes existem.~\cite{igeo} Essas regiões são definidas por vértices de polígonos com coordenas GPS. 
+
+Em complementaridade com estes serviços recorre-se a uma API do site GBIF (\emph{Global Biodiversity Information Facility}) para obter informação mais detalhada sobre cada espécie, como reino, família, imagens, etc.~\cite{gbif} Esta API reúne informação de diversas fontes, contendo no momento informação sobre aproximadamente 1,650,00 espécies. Por fim é necessário recorrer ao Google Maps para mostrar o mapa de Portugal e toda a informação a ele associada.~\cite{googlemaps}
+
+O modelo de dados da API GBIF depende do serviço utilizado, pretende-se utilizar o serviço de pesquisa pelo nome científico de um ser vivo, que devolve um conjunto de registos sobre a espécie pesquisada. No caso de se obter um registo com uma referência para a página da Wikipédia, pretende-se utilizar a key dessa referência para obter a imagem utilizada nessa mesma página para identificar o ser vivo e ainda obter a descrição inicial. 
+
+\subsection{Modelo da pesquisa por nome científico:}
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.18\textwidth,height=0.24\textheight]{Search_by_Scientify_Name}
+		\caption{Procura por nome científico}
+		\label{fig:arch}
+	\end{center}
+\end{figure}
+
+\subsection{Modelo da resposta  para obter a imagem do animal na Wikipédia:}
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.18\textwidth,height=0.18\textheight]{Search_by_key}
+		\caption{Procura por imagem da Wikipédia}
+		\label{fig:arch}
+	\end{center}
+\end{figure}
+
+\subsection{Formato da resposta para obter a descrição do animal da página da Wikipédia:}
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.18\textwidth,height=0.20\textheight]{Search_by_description}
+		\caption{Procura por descrição da Wikipédia}
+		\label{fig:arch}
+	\end{center}
+\end{figure}
+
+Na base de dados pretende-se guardar a informação necessária para fazer tracking do utilizador, para isso basta guardar os dados do mesmo e os seus percursos. Os percursos consistem em conjuntos de coordenadas GPS, que se pretende guardar em formato XML.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.45\textwidth,height=0.09\textheight]{Tracking_db}
+		\caption{Tracking do user}
+		\label{fig:arch}
+	\end{center}
+\end{figure}
+
+
+O modelo de dados das respostas do portal iGEO é apresentado de seguida, consiste numa coleção de elementos que contem o nome cientifico e vulgar, um id e as regiões do mapa(shape) onde estas estão presentes.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.45\textwidth]{igeo}
+		\caption{IGEO}
+		\label{fig:arch}
+	\end{center}
+\end{figure}
+
+\section{Metodologia}\label{sec:metod}
+A construção do projeto está dividida em várias etapas: a análise do formato dos dados das múltiplas fontes, a decisão do tipo de armazenamento e processamento dos dados, a identificação de requisitos e tecnologias a utilizar, a elaboração da arquitetura e desenvolvimento de código final da aplicação e dos web services da nossa API.
+
+
+
+%------------------------------------------------
+
+\section{Conclusão}\label{sec:conclusions}
+
+	Neste artigo abordou-se o desenvolvimento de um protótipo, com vista a estudar a viabilidade da aplicação pretendida, assim como todos os componentes necessário para a construção da aplicação.
+
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+%% auto bibliographic list 
+\renewcommand{\bibname}{Referências}
+% uses bibtex file
+%\bibliographystyle{alpha-pt}
+%\bibliographystyle{alpha}
+\bibliographystyle{unsrt-pt}
+%\bibliographystyle{unsrt}
+\bibliography{artigo}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
+
+

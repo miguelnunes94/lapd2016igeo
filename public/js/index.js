@@ -39,13 +39,13 @@ function sucessUserLocation(position){
 	marker.setMap(map);
 	waitingDialog.hide();
 	/* == TRACKING ==*/
-	var options;
+	/*var options;
 	options = {
 	  enableHighAccuracy: true,
 	  timeout: 5000,
 	  maximumAge: 0
-	};
-	navigator.geolocation.watchPosition(success, error, options);
+	};*/
+	//navigator.geolocation.watchPosition(success, error, options); => deprecated
 	log("coords: "+position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
 };
@@ -57,17 +57,18 @@ function errorUserLocation(err){
 	//window.location.replace('/');
 };
 
-/* chamada quando o user muda de localização */
+/*
+// chamada quando o user muda de localização 
 function success(crd) {
   log('Sua posição atual é: Latitude : ' + crd.latitude + 'Longitude: ' + crd.longitude  
   	+ 'Mais ou menos ' + crd.accuracy + ' metros.');
 };
-
-/* chamada quando dá erro ao pedir para fazer tracking do user */
+// chamada quando dá erro ao pedir para fazer tracking do user 
 function error(err) {
 	log('ERROR(' + err.code + '): ' + err.message);
   	console.warn('ERROR(' + err.code + '): ' + err.message);
 };
+*/
 
 /* manda mensagens para aquele div no fim da página que diz: LOG*/
 function log(msg){

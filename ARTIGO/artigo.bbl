@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{igeo}
+iGEO.
+\newblock {Serviços do Portal iGEO}.
+\newblock \url{http://www.igeo.pt/DadosAbertos/Listagem.aspx}.
+\newblock Acedido em Março, 2016.
+
+\bibitem{gbif}
+GBIF.
+\newblock {API de espécies do GBIF}.
+\newblock \url{http://www.gbif.org/developer/species}.
+\newblock Acedido em Março, 2016.
+
+\bibitem{googlemaps}
+Google.
+\newblock {Google Maps API}.
+\newblock \url{https://developers.google.com/maps/documentation/javascript/}.
+\newblock Acedido em Março, 2016.
+
+\end{thebibliography}
