@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS species;
 
 CREATE TABLE users(
 	userID SERIAL,
-	username char(50),
+	username char(50) UNIQUE,
 	password char(256),
 	email char(256),
 	PRIMARY KEY(userID)

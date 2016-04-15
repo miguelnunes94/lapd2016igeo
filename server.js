@@ -33,12 +33,30 @@ app.get('/', function (req, res) {
 app.post('/login', urlencodedParser, function(req, res){
 	/* ISTO AINDA NÃO FAZ NADA, SÓ REDIRECT PARA O MAPA */
 
-   	//var username = req.body.username;
-    //var password = req.body.password;
-
-    
-    req.session.loggedin=true;
-    res.redirect('/');
+	var username = req.body.username;
+	var password = req.body.password;
+	var client = new pg.Client(conString);
+	client.connect(function(err) {
+		if(err) {
+			return console.error('could not connect to postgres', err);
+		}
+		client.query("select * from users where username='"+username+"'", function(err, result) {
+			if(err) {
+				return console.error('error running query', err);
+			}
+			if(result.rows.length > 0){
+				if(result.rows[0].password.trim()==password){
+					req.session.loggedin=true;
+					req.session.userid=result.rows[0].userid;
+					req.session.username=result.rows[0].username;
+				}else {
+					req.session.loggedin=false;
+				}
+			}
+			client.end();
+			res.redirect('/');
+		});
+	});
 });
 
 
@@ -67,10 +85,9 @@ app.post('/register', urlencodedParser, function(req, res){
 		client.connect();
 		var query = client.query("insert into users (username,password,email) "+ 
 			"values ('"+req.body.username+"','"+
-			req.body.email+"','"+req.body.password+"')");    
+			req.body.password+"','"+req.body.email+"')");    
 		query.on("end", function (result){          
 			client.end(); 
-			req.session.loggedin=true;
 			res.redirect('/');
 		});
 	}
