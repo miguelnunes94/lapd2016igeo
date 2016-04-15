@@ -1,15 +1,16 @@
-	/* CONFIGS */
-	var express = require('express');
-	var app = express();
-	var bodyParser = require('body-parser');
-	var session = require('express-session');
-	var app = express();
-	app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized: false}));
+/* CONFIGS */
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var app = express();
+app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized: false}));
 
 // Create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
-
+app.set('view engine', 'ejs');
+app.set('views',__dirname+'/views');
 
 //POSTGRES
 var pg = require('pg');
@@ -23,9 +24,10 @@ var conString = String(process.env.DATABASE_URL || "postgres://postgres:12345@lo
 /*HOMEPAGE*/
 app.get('/', function (req, res) {	
 	if (req.session.loggedin) {
-		 sendHTML(res, "index.htm"); // RETORNA MAPA SE ESTÁ LOGGEDIN
+		 sendHTML(res, "index",{username: req.session.username}); // RETORNA MAPA SE ESTÁ LOGGEDIN
+		 //res.render("index",{username: req.session.username});
 		}else{	
-		sendHTML(res, "login.htm"); // SENAO OBRIGA A FAZER LOGIN
+		sendHTML(res, "login",{}); // SENAO OBRIGA A FAZER LOGIN
 	}	 
 });
 
@@ -58,8 +60,6 @@ app.post('/login', urlencodedParser, function(req, res){
 		});
 	});
 });
-
-
 
 /* GET LOGOUT*/
 app.get('/logout', function(req, res){
@@ -153,6 +153,7 @@ var server = app.listen(port, function () {
 
 });
 
-function sendHTML(res, file){
-	res.sendFile( __dirname + "/public/views/" + file);
+function sendHTML(res, file, data){
+	res.render(__dirname + "/public/views/"+ file, data);
+	//res.sendFile( __dirname + "/public/views/" + file);
 }
