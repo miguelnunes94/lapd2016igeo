@@ -5,17 +5,16 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized: false}));
-
 // Create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views',__dirname+'/views');
-
+var flash = require('connect-flash');
+app.use(flash());
 //POSTGRES
 var pg = require('pg');
 var conString = String(process.env.DATABASE_URL || "postgres://postgres:12345@localhost/postgres");
-var message = "";
 
 /*========================================================================*/
 
@@ -24,10 +23,10 @@ var message = "";
 /*HOMEPAGE*/
 app.get('/', function (req, res) {	
 	if (req.session.loggedin) {
-		 sendHTML(res, "index",{username: req.session.username, message: message}); // RETORNA MAPA SE ESTÁ LOGGEDIN
+		 sendHTML(res, "index",{username: req.session.username}); // RETORNA MAPA SE ESTÁ LOGGEDIN
 		 //res.render("index",{username: req.session.username});
 		}else{	
-		sendHTML(res, "login",{message: message}); // SENAO OBRIGA A FAZER LOGIN
+		sendHTML(res, "login", { message: req.flash('message') }); // SENAO OBRIGA A FAZER LOGIN
 	}	 
 });
 
@@ -53,10 +52,10 @@ app.post('/login', urlencodedParser, function(req, res){
 					req.session.username=result.rows[0].username;
 				}else {
 					req.session.loggedin=false;
-					message= "Wrong password";
+					req.flash('message', "Wrong password");
 				}
 			}else{
-				message= "User not found";
+				req.flash('message', "User not found");
 			}
 			client.end();
 			res.redirect('/');

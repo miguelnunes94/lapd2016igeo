@@ -44,7 +44,9 @@
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-											<p class="text-danger"> <%= message %></p>
+											<% if (message && message!='') { %>
+											   <div class="alert alert-danger"><%= message %></div>
+											 <% } %>
 												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
 											</div>
 										</div>
