@@ -31,8 +31,6 @@ function sucessUserLocation(position){
 	log('geolocation received');
 	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	
-	setTimeout( function(){map_light( initialLocation );}, 0 );
-	
 	map.setCenter(initialLocation);
 	console.log(position);
 
@@ -53,6 +51,10 @@ function sucessUserLocation(position){
 	//navigator.geolocation.watchPosition(success, error, options); => deprecated
 	log("coords: "+position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
+	
+	google.maps.event.addListenerOnce(map, "projection_changed", function(){
+		map_light( initialLocation );
+	});
 };
 
 /* chamada quando à um erro ao receber a localização do google*/

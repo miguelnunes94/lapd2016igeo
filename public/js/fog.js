@@ -172,6 +172,10 @@ function map_light( latLng ){
 
 /*clear area near clicked points*/
 function light(x,y){
+	//Get the position "in the grid".
+	x = squareSize*(0.5+Math.floor(x/squareSize));
+	y = squareSize*(0.5+Math.floor(y/squareSize));
+	//Clear the position.
 	var dgCO = draw.globalCompositeOperation;
 	var dfS = draw.fillStyle;
 	draw.globalCompositeOperation="destination-out";
