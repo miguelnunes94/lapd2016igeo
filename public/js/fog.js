@@ -103,9 +103,9 @@ function addClick(){
 /*Call light from the given lat/lng points.*/
 function map_light( latLng ){
 	
-	var scale = Math.pow(2, map.getZoom());
-	var worldPoint = projection.fromLatLngToPoint(latLng);
-	return [Math.floor((worldPoint.x - bottomLeft.x) * scale), Math.floor((worldPoint.y - topRight.y) * scale)];
+	//var scale = Math.pow(2, map.getZoom());
+	//var worldPoint = projection.fromLatLngToPoint(latLng);
+	//return [Math.floor((worldPoint.x - bottomLeft.x) * scale), Math.floor((worldPoint.y - topRight.y) * scale)];
 	
 	var proj = overlay.getProjection(); //map.getProjection();
 	//cBounds
