@@ -10,10 +10,11 @@ function initMap() {
     if (navigator.geolocation) {
 		log('geolocation on');
 	}
+	
+	initFog();
+	
 	waitingDialog.show('Requesting your location...');
 	getUserLocation();
-
-	initFog();
 };
 
 /* obter a localização do user e atualizar mapa*/
@@ -29,6 +30,9 @@ function getUserLocation(){
 function sucessUserLocation(position){
 	log('geolocation received');
 	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	
+	map_light( position.coords.latitude, position.coords.longitude );
+	
 	map.setCenter(initialLocation);
 	console.log(position);
 

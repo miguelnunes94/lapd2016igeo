@@ -62,7 +62,7 @@ function initFog(){
 		/*draw.clearRect(0,0,148,422);
 		draw.clearRect(0,0,90,607);
 		draw.clearRect(0,920,134,1260);*/
-		light(squareSize/2+lx*squareSize,squareSize/2+ly*squareSize);
+		light(squareSize/2+squareSize,squareSize/2+squareSize);
 
 		var panes = this.getPanes();
 		panes.overlayLayer.appendChild(canvas);
@@ -98,16 +98,21 @@ function cOverlay(map){
 function addClick(){
 	google.maps.event.addListener(map, 'click', function(e) {
 		//console.log(e.latLng.lat()+","+e.latLng.lng());
-		var pw = cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
-		var ph = cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
-		var py = (e.latLng.lat()-cBounds.getNorthEast().lat())/ph;
-		var px = (e.latLng.lng()-cBounds.getSouthWest().lng())/pw;
-		//console.log(px+","+py);
-		var cx = px*canvas.width;
-		var cy = py*canvas.height;
-		//console.log(cx+","+cy);
-		light(cx,cy);
+		map_light( e.latLng.lat(), e.latLng.lng() );
 	});
+}
+
+/*Call light from the given lat/lng points.*/
+function map_light(lat,lng){
+	var pw = cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
+	var ph = cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
+	var py = (lat-cBounds.getNorthEast().lat())/ph;
+	var px = (lng-cBounds.getSouthWest().lng())/pw;
+	//console.log(px+","+py);
+	var cx = px*canvas.width;
+	var cy = py*canvas.height;
+	//console.log(cx+","+cy);
+	light( cx, cy );
 }
 
 /*clear area near clicked points*/
