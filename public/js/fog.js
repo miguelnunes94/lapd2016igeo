@@ -3,7 +3,7 @@ var cBounds,
 	squareSize = 5,
 	r1 = Math.sqrt(2*(squareSize*squareSize))/2,
 	r2 = r1*4/3,
-	canvas,
+	canvas = document.createElement("canvas"),
 	draw;
 
 /*converter coordenadas de um array do loadLocationFromSpecies para coordenadas do google (lat+lng).*/
@@ -46,24 +46,22 @@ function initFog(){
 		new google.maps.LatLng(42.21,-6.09)//NE,lat,lng
 	);
 	
+	canvas.style.borderStyle = 'none';
+	canvas.style.borderWidth = '0px';
+	canvas.style.position = 'absolute';
+	canvas.width = 670;
+	canvas.height = 1260;
+	
+	draw = canvas.getContext("2d");
+	draw.fillStyle="rgba(0,0,0,0.85)";
+	draw.fillRect(0,0,canvas.width,canvas.height);
+	/*draw.clearRect(0,0,148,422);
+	draw.clearRect(0,0,90,607);
+	draw.clearRect(0,920,134,1260);*/
+	light(squareSize/2+squareSize,squareSize/2+squareSize);
+	
 	cOverlay.prototype = new google.maps.OverlayView();
 	cOverlay.prototype.onAdd = function(){
-		canvas = document.createElement("canvas");
-		/*needed?*/
-		canvas.style.borderStyle = 'none';
-		canvas.style.borderWidth = '0px';
-		canvas.style.position = 'absolute';
-		canvas.width = 670;
-		canvas.height = 1260;
-		/**/
-		draw = canvas.getContext("2d");
-		draw.fillStyle="rgba(0,0,0,0.85)";
-		draw.fillRect(0,0,canvas.width,canvas.height);
-		/*draw.clearRect(0,0,148,422);
-		draw.clearRect(0,0,90,607);
-		draw.clearRect(0,920,134,1260);*/
-		light(squareSize/2+squareSize,squareSize/2+squareSize);
-
 		var panes = this.getPanes();
 		panes.overlayLayer.appendChild(canvas);
 	}
