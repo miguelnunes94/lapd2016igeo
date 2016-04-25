@@ -58,7 +58,7 @@ function initFog(){
 	/*draw.clearRect(0,0,148,422);
 	draw.clearRect(0,0,90,607);
 	draw.clearRect(0,920,134,1260);*/
-	light(squareSize/2+squareSize,squareSize/2+squareSize);
+	//light(squareSize/2+squareSize,squareSize/2+squareSize);
 	
 	cOverlay.prototype = new google.maps.OverlayView();
 	cOverlay.prototype.onAdd = function(){
@@ -96,16 +96,29 @@ function cOverlay(map){
 function addClick(){
 	google.maps.event.addListener(map, 'click', function(e) {
 		//console.log(e.latLng.lat()+","+e.latLng.lng());
-		map_light( e.latLng.lat(), e.latLng.lng() );
+		map_light( e.latLng );
 	});
 }
 
 /*Call light from the given lat/lng points.*/
-function map_light(lat,lng){
-	var pw = cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
-	var ph = cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
-	var py = (lat-cBounds.getNorthEast().lat())/ph;
-	var px = (lng-cBounds.getSouthWest().lng())/pw;
+function map_light( latLng ){
+	
+	var scale = Math.pow(2, map.getZoom());
+	var worldPoint = projection.fromLatLngToPoint(latLng);
+	return [Math.floor((worldPoint.x - bottomLeft.x) * scale), Math.floor((worldPoint.y - topRight.y) * scale)];
+	
+	var proj = overlay.getProjection(); //map.getProjection();
+	//cBounds
+	var tR = proj.fromLatLngToPoint( cBounds.getNorthEast() );
+	var bL = proj.fromLatLngToPoint( cBounds.getSouthWest() );
+	//var sc = Math.pow( 2, map.getZoom() );
+	var wP = proj.fromLatLngToPoint(latLng);
+	
+	
+	var pw = tR.x - bL.x; //cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
+	var ph = bL.y - tR.y; //cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
+	var py = (wP.y - tR.y) / ph; //(lat-cBounds.getNorthEast().lat())/ph;
+	var px = (wP.x - bL.x) / pw; //(lng-cBounds.getSouthWest().lng())/pw;
 	//console.log(px+","+py);
 	var cx = px*canvas.width;
 	var cy = py*canvas.height;
