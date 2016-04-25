@@ -29,7 +29,7 @@ function loadSpeciesFromLocation(lat, long){
 				      +'</div>'
 				      +'<div class="modal-body">'
 						+'<button id="btn_'+res.specieid+'">Ver no Mapa</button><br/>'
-				        +'<p>Falta por aqui a informação do GBIF (descrição e imagem da espécie)</p>'
+				        +'<p>Falta por aqui a informação do GBIF (detalhes, descrição e imagem da espécie)</p>'
 				      +'</div>'
 				      +'<div class="modal-footer">'
 				        +'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
