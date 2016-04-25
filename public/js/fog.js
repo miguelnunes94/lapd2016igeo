@@ -6,6 +6,45 @@ var cBounds,
 	canvas = document.createElement("canvas"),
 	draw;
 
+//Used to clear unused parts of the map:
+var ppr = [
+	287.65,    8.95,
+	203.37,   34.97,
+	154.49,   81.99,
+	156.99,  119.01,
+	174.94,  208.05,
+	194.39,  284.09,
+	197.88,  298.60,
+	150.00,  493.20,
+	157.98,  508.21,
+	120.08,  631.77,
+	 80.68,  679.79,
+	 54.25,  687.30,
+	 71.71,  700.80,
+	 63.23,  746.33,
+	 57.74,  758.33,
+	 60.24,  784.35,
+	 43.78,  825.37,
+	 49.27,  852.38,
+	 90.16,  860.38,
+	100.13,  912.91,
+	142.02,  908.91,
+	158.98,  899.90,
+	175.94,  932.92,
+	176.44,  974.94,
+	162.97, 1013.96,
+	159.98, 1021.47,
+	173.94, 1030.97,
+	136.04, 1232.57,
+	449.23, 1240.08,
+	545.97,  950.93,
+	530.02,  727.82,
+	636.74,  214.56,
+	665.66,  161.53,
+	608.81,   43.47,
+	330.53,   52.47
+];
+
 /*converter coordenadas de um array do loadLocationFromSpecies para coordenadas do google (lat+lng).*/
 function ctoc(arr_c){
 	var ret = [];
@@ -85,6 +124,21 @@ function initFog(){
 	
 	overlay = new cOverlay(map);
 	
+	var dgCO = draw.globalCompositeOperation;
+	var dfS = draw.fillStyle;
+	draw.globalCompositeOperation="destination-in";
+	draw.fillStyle = "#fff";
+	draw.beginPath();
+	
+	draw.moveTo(ppr[0],ppr[1]);
+	for(var i=2;i<ppr.length;i+=2){
+		draw.lineTo( ppr[i], ppr[i+1] );
+	}
+	
+	draw.fill();
+	draw.globalCompositeOperation=dgCO;
+	draw.fillStyle=dfS;
+	
 	addClick();
 }
 
@@ -102,27 +156,17 @@ function addClick(){
 
 /*Call light from the given lat/lng points.*/
 function map_light( latLng ){
-	
-	//var scale = Math.pow(2, map.getZoom());
-	//var worldPoint = projection.fromLatLngToPoint(latLng);
-	//return [Math.floor((worldPoint.x - bottomLeft.x) * scale), Math.floor((worldPoint.y - topRight.y) * scale)];
-	
-	var proj = map.getProjection(); //map.getProjection();
-	//cBounds
+	var proj = map.getProjection();
 	var tR = proj.fromLatLngToPoint( cBounds.getNorthEast() );
 	var bL = proj.fromLatLngToPoint( cBounds.getSouthWest() );
-	//var sc = Math.pow( 2, map.getZoom() );
 	var wP = proj.fromLatLngToPoint(latLng);
 	
-	
-	var pw = tR.x - bL.x; //cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
-	var ph = bL.y - tR.y; //cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
-	var py = (wP.y - tR.y) / ph; //(lat-cBounds.getNorthEast().lat())/ph;
-	var px = (wP.x - bL.x) / pw; //(lng-cBounds.getSouthWest().lng())/pw;
-	//console.log(px+","+py);
+	var pw = tR.x - bL.x;
+	var ph = bL.y - tR.y;
+	var py = (wP.y - tR.y) / ph;
+	var px = (wP.x - bL.x) / pw;
 	var cx = px*canvas.width;
 	var cy = py*canvas.height;
-	//console.log(cx+","+cy);
 	light( cx, cy );
 }
 

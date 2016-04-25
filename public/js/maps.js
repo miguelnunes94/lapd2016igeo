@@ -31,7 +31,7 @@ function sucessUserLocation(position){
 	log('geolocation received');
 	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	
-	map_light( initialLocation );
+	setTimeout( function(){map_light( initialLocation );}, 0 );
 	
 	map.setCenter(initialLocation);
 	console.log(position);
