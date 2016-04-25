@@ -107,7 +107,7 @@ function map_light( latLng ){
 	//var worldPoint = projection.fromLatLngToPoint(latLng);
 	//return [Math.floor((worldPoint.x - bottomLeft.x) * scale), Math.floor((worldPoint.y - topRight.y) * scale)];
 	
-	var proj = overlay.getProjection(); //map.getProjection();
+	var proj = map.getProjection(); //map.getProjection();
 	//cBounds
 	var tR = proj.fromLatLngToPoint( cBounds.getNorthEast() );
 	var bL = proj.fromLatLngToPoint( cBounds.getSouthWest() );
