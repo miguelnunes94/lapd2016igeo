@@ -13,6 +13,7 @@ function initMap() {
 	waitingDialog.show('Requesting your location...');
 	getUserLocation();
 
+	initFog();
 };
 
 /* obter a localização do user e atualizar mapa*/

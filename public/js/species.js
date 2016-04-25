@@ -8,8 +8,12 @@ function loadSpeciesFromLocation(lat, long){
 	}).done(function (data){
 		console.log(data);
 		$("#showSpecies").text("");
+		
+		/*
 		$("#showSpecies").prepend('<button id="testFogBtn">Test Fog Grid</button>');
 		$("#testFogBtn").bind("click",testFog);
+		*/
+		
 		/*data.result.sort(function(a, b){
 			return -(a.scientificname.trim().length+a.nomevulgar.trim().length)+(b.scientificname.trim().length+b.nomevulgar.trim().length);
 		});*/

@@ -1,3 +1,10 @@
+var cBounds,
+	overlay,
+	squareSize = 5,
+	r1 = Math.sqrt(2*(squareSize*squareSize))/2,
+	r2 = r1*4/3,
+	canvas,
+	draw;
 
 /*converter coordenadas de um array do loadLocationFromSpecies para coordenadas do google (lat+lng).*/
 function ctoc(arr_c){
@@ -11,7 +18,6 @@ function ctoc(arr_c){
 /*pintar poligonos*/
 var polys = [];
 function paintPoly(coords_real){
-	//var N =[38.410695633953928, -8.9952367211616338, 38.498230970741282, -9.020671694551849, 38.475719880830212, -9.1320904314978346, 38.388218770143105, -9.1065232425462455, 38.410695633953928, -8.9952367211616338];
 	var coords = ctoc(coords_real);
 	var poly = new google.maps.Polygon({
 		paths: coords,
@@ -33,115 +39,90 @@ function clearMap(){
 	polys=[];
 }
 
-/*pintar quadrado de 'fog'*/
-var fogs = [];
-var fo=[
-		[0,1],
-		[1,1],
-		[1,0],
-		[0,0]
-	];
+/*iniciar o fog:*/
+function initFog(){
+	cBounds = new google.maps.LatLngBounds(
+		new google.maps.LatLng(36.88,-9.78),//SW,lat,lng
+		new google.maps.LatLng(42.21,-6.09)//NE,lat,lng
+	);
+	
+	cOverlay.prototype = new google.maps.OverlayView();
+	cOverlay.prototype.onAdd = function(){
+		canvas = document.createElement("canvas");
+		/*needed?*/
+		canvas.style.borderStyle = 'none';
+		canvas.style.borderWidth = '0px';
+		canvas.style.position = 'absolute';
+		canvas.width = 670;
+		canvas.height = 1260;
+		/**/
+		draw = canvas.getContext("2d");
+		draw.fillStyle="rgba(0,0,0,0.85)";
+		draw.fillRect(0,0,canvas.width,canvas.height);
+		/*draw.clearRect(0,0,148,422);
+		draw.clearRect(0,0,90,607);
+		draw.clearRect(0,920,134,1260);*/
+		light(squareSize/2+lx*squareSize,squareSize/2+ly*squareSize);
 
-var dtor = Math.PI/180;
-
-var fmult = 2;
-
-var ff1=0.1128/fmult, fa1=10.6365, ff2=0.0914/fmult, fa2=106.1622;
-fo[0][0] = ff1*Math.sin(fa1*dtor);
-fo[0][1] = ff1*Math.cos(fa1*dtor);
-fo[2][0] = ff2*Math.sin(fa2*dtor);
-fo[2][1] = ff2*Math.cos(fa2*dtor);
-fo[1][0] = fo[0][0]+fo[2][0];
-fo[1][1] = fo[0][1]+fo[2][1];
-
-function updMap(){
-	fo[0][0] = ff1*Math.sin(fa1*dtor);
-	fo[0][1] = ff1*Math.cos(fa1*dtor);
-	fo[2][0] = ff2*Math.sin(fa2*dtor);
-	fo[2][1] = ff2*Math.cos(fa2*dtor);
-	fo[1][0] = fo[0][0]+fo[2][0];
-	fo[1][1] = fo[0][1]+fo[2][1];
-	clearFog();
-	fogBorder(0.5);
-	fogInner(0.5);
-}
-
-function rdyUpdMap(){
-	$("#showSpecies").prepend('X_L:<input type="text" id="u_1" value="0.1164"><br/>'+
-							  'X_A:<input type="text" id="u_2" value="10.6365"><br/>'+
-							  'Y_L:<input type="text" id="u_3" value="0.0912"><br/>'+
-							  'Y_A:<input type="text" id="u_4" value="106.1522"><br/>');
-	$("#u_1").bind("change",function(){ff1=parseFloat($("#u_1").val());updMap();});
-	$("#u_2").bind("change",function(){fa1=parseFloat($("#u_2").val());updMap();});
-	$("#u_3").bind("change",function(){ff2=parseFloat($("#u_3").val());updMap();});
-	$("#u_4").bind("change",function(){fa2=parseFloat($("#u_4").val());updMap();});
-}
-
-var fx = 41.66162721430806,
-	fy = -10.41229248046875;
-var flx = 35*fmult, fly = 57*fmult;
-//x:0,y:0 to x:35,y:57
-function paintFog(x,y,f){
-	if(f==undefined)f=0.5;
-	if(f>0){
-		var sx = fx-y*fo[2][0]+x*fo[0][0],
-			sy = fy-y*fo[2][1]+x*fo[0][1];
-		var P = [];
-		for(var i=0;i<5;i++){
-			var n=i%4;
-			P.push( {lat: sx+fo[n][0], lng: sy+fo[n][1]} );
-		}
-		var fog = new google.maps.Polygon({
-			paths: P,
-			strokeColor: '#000000',
-			strokeOpacity: f,
-			strokeWeight: 1,
-			fillColor: '#000000',
-			fillOpacity: f
-		});
-		fog.setMap(map);
-		fogs.push(fog);
+		var panes = this.getPanes();
+		panes.overlayLayer.appendChild(canvas);
 	}
+
+	cOverlay.prototype.draw = function() {
+	  var overlayProjection = this.getProjection();
+
+	  var sw = overlayProjection.fromLatLngToDivPixel(cBounds.getSouthWest());
+	  var ne = overlayProjection.fromLatLngToDivPixel(cBounds.getNorthEast());
+
+	  canvas.style.left = sw.x + 'px';
+	  canvas.style.top = ne.y + 'px';
+	  canvas.style.width = (ne.x - sw.x) + 'px';
+	  canvas.style.height = (sw.y - ne.y) + 'px';
+	};
+
+	cOverlay.prototype.onRemove = function() {
+	  canvas.parentNode.removeChild(canvas);
+	  canvas = null;
+	};
+	
+	overlay = new cOverlay(map);
+	
+	addClick();
 }
 
-/*Border à volta do país todo com fog:*/
-function fogBorder(f){
-	if(f==undefined)f=1;
-	for(var y=0;y<=fly;y++)
-		for(var x=0;x<=flx;x++)
-			if(x==0||x==flx||y==0||y==fly)
-				paintFog(x,y,f);
-}
-
-/*Tudo EXCEPTO a border.*/
-function fogInner(f){
-	if(f==undefined)f=0.5;
-	for(var y=0;y<=fly;y++)
-		for(var x=0;x<=flx;x++)
-			if(x!=0&&x!=flx&&y!=0&&y!=fly)
-				paintFog(x,y,f);
+function cOverlay(map){
+	this.setMap(map);
 }
 
 /*Test clicking coordinates.*/
 function addClick(){
 	google.maps.event.addListener(map, 'click', function(e) {
-		console.log(e.latLng.lat()+","+e.latLng.lng());
+		//console.log(e.latLng.lat()+","+e.latLng.lng());
+		var pw = cBounds.getNorthEast().lng()-cBounds.getSouthWest().lng();
+		var ph = cBounds.getSouthWest().lat()-cBounds.getNorthEast().lat();
+		var py = (e.latLng.lat()-cBounds.getNorthEast().lat())/ph;
+		var px = (e.latLng.lng()-cBounds.getSouthWest().lng())/pw;
+		//console.log(px+","+py);
+		var cx = px*canvas.width;
+		var cy = py*canvas.height;
+		//console.log(cx+","+cy);
+		light(cx,cy);
 	});
 }
 
-/*test fog*/
-function testFog(){
-	clearFog();
-	clearMap();
-	fogBorder(0.6);
-	fogInner();
-	loadLocationFromSpecies(202);
-}
-
-/*limpar TODO o fog*/
-function clearFog(){
-	for(var i=0;i<fogs.length;i++){
-		fogs[i].setMap(null);
-	}
-	fogs=[];
+/*clear area near clicked points*/
+function light(x,y){
+	var dgCO = draw.globalCompositeOperation;
+	var dfS = draw.fillStyle;
+	draw.globalCompositeOperation="destination-out";
+	var grd=draw.createRadialGradient(x,y,r1,x,y,r2);
+	grd.addColorStop(0,"rgba(0,0,0,1)");
+	grd.addColorStop(1,"rgba(0,0,0,0)");
+	draw.fillStyle=grd;
+	draw.beginPath();
+	draw.arc( x, y, r2, //x,y,r
+				0, 2 * Math.PI, false);
+	draw.fill();
+	draw.globalCompositeOperation=dgCO;
+	draw.fillStyle=dfS;
 }
