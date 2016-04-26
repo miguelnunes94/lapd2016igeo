@@ -1,5 +1,7 @@
 var map;
 var lognum=0;
+var initialLocation;
+
 /* inicia o map, esta função é chamada pela callback do google maps*/
 function initMap() {
 	
@@ -29,9 +31,12 @@ function getUserLocation(){
 /* chamada quando recebemos a localização do goole*/
 function sucessUserLocation(position){
 	log('geolocation received');
-	initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	initialLocation = new google.maps.LatLng(
+		position.coords.latitude,
+		position.coords.longitude
+	);
 	
-	map.setCenter(initialLocation);
+	map.setCenter( initialLocation );
 	console.log(position);
 
 	var marker = new google.maps.Marker({
@@ -52,8 +57,9 @@ function sucessUserLocation(position){
 	log("coords: "+position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
 	
-	google.maps.event.addListenerOnce(map, "projection_changed", function(){
+	var heyListen = google.maps.event.addListener(map, "projection_changed", function(){
 		map_light( initialLocation );
+		google.maps.event.removeListener( heyListen );
 	});
 };
 
