@@ -1,8 +1,8 @@
 var cBounds,
 	overlay,
 	squareSize = 5,
-	r1 = Math.sqrt(2*(squareSize*squareSize))/2,
-	r2 = r1*4/3,
+	r1 = Math.round(Math.sqrt(2*(squareSize*squareSize))/2*100)/100,
+	r2 = Math.round(r1*4/3*100)/100,
 	canvas = document.createElement("canvas"),
 	draw;
 
