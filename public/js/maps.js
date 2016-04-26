@@ -57,7 +57,7 @@ function sucessUserLocation(position){
 	log("coords: "+position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude,position.coords.longitude);
 	
-	var heyListen = google.maps.event.addListener(map, "projection_changed", function(){
+	var heyListen = google.maps.event.addListener(map, "idle", function(){
 		map_light( initialLocation );
 		google.maps.event.removeListener( heyListen );
 	});
