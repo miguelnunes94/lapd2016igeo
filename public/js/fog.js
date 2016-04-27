@@ -89,7 +89,7 @@ function initFog(){
 	canvas.height = 1260;
 	
 	draw = canvas.getContext("2d");
-	draw.fillStyle="rgba(0,0,0,0.85)";
+	draw.fillStyle="rgba(0,0,0,0.45)";
 	draw.fillRect(0,0,canvas.width,canvas.height);
 	/*draw.clearRect(0,0,148,422);
 	draw.clearRect(0,0,90,607);
