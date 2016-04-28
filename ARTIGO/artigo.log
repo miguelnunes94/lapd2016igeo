@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.11.19)  31 MAR 2016 17:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.11.19)  28 APR 2016 17:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -592,20 +592,7 @@ Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 \f@ncyO@erf=\skip60
 \f@ncyO@olf=\skip61
 \f@ncyO@orf=\skip62
-) (./artigo.aux
-
-LaTeX Warning: Label `fig:arch' multiply defined.
-
-
-LaTeX Warning: Label `fig:arch' multiply defined.
-
-
-LaTeX Warning: Label `fig:arch' multiply defined.
-
-
-LaTeX Warning: Label `fig:arch' multiply defined.
-
-)
+) (./artigo.aux)
 \openout1 = `artigo.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
@@ -623,7 +610,8 @@ LaTeX Font Info:    ... okay on input line 97.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
 LaTeX Font Info:    ... okay on input line 97.
 LaTeX Font Info:    Try loading font information for T1+pplx on input line 97.
- (c:/texlive/2015/texmf-dist/tex/latex/psnfss/t1pplx.fd
+
+(c:/texlive/2015/texmf-dist/tex/latex/psnfss/t1pplx.fd
 File: t1pplx.fd 2004/09/06 font definitions for T1/pplx.
 )
 (c:/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -788,75 +776,109 @@ LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <14.4> not available
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 114.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 123.
+(babel)             in language  on input line 120.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 131.
+(babel)             in language  on input line 129.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 137.
-
-Underfull \vbox (badness 4899) has occurred while \output is active []
-
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 140.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 140.
+(babel)             in language  on input line 129.
  [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <12> not available
-(Font)              Font shape `T1/pplx/b/n' tried instead on input line 145.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 145.
+(babel)             in language  on input line 132.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 138.
 
-<Search_by_Scientify_Name.png, id=56, 110.66344pt x 234.1247pt>
-File: Search_by_Scientify_Name.png Graphic file (type png)
+<localizacao_especies.png, id=53, 307.90031pt x 67.75313pt>
+File: localizacao_especies.png Graphic file (type png)
 
-<use Search_by_Scientify_Name.png>
-Package pdftex.def Info: Search_by_Scientify_Name.png used on input line 150.
-(pdftex.def)             Requested size: 87.06685pt x 165.53664pt.
+<use localizacao_especies.png>
+Package pdftex.def Info: localizacao_especies.png used on input line 143.
+(pdftex.def)             Requested size: 241.84843pt x 53.21939pt.
+
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 143--144
+ [] 
+ []
+
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <10> not available
-(Font)              Font shape `T1/pplx/b/n' tried instead on input line 151.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 156.
-
-<Search_by_key.png, id=58, 112.16907pt x 237.13594pt>
-File: Search_by_key.png Graphic file (type png)
- <use Search_by_key.png>
-Package pdftex.def Info: Search_by_key.png used on input line 161.
-(pdftex.def)             Requested size: 87.06532pt x 124.14pt.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 167.
-
-<Search_by_description.png, id=59, 111.41624pt x 237.88875pt>
-File: Search_by_description.png Graphic file (type png)
-
-<use Search_by_description.png>
-Package pdftex.def Info: Search_by_description.png used on input line 172.
-(pdftex.def)             Requested size: 87.06242pt x 137.94289pt.
-
-<Tracking_db.png, id=60, 271.76532pt x 71.51718pt>
-File: Tracking_db.png Graphic file (type png)
- <use Tracking_db.png>
-Package pdftex.def Info: Tracking_db.png used on input line 183.
-(pdftex.def)             Requested size: 217.67378pt x 62.06993pt.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 191.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 191.
-
-[2 <./Search_by_Scientify_Name.png> <./Search_by_key.png> <./Search_by_descript
-ion.png> <./Tracking_db.png>] <igeo.png, id=76, 405.01312pt x 242.40562pt>
+(Font)              Font shape `T1/pplx/b/n' tried instead on input line 144.
+<igeo.png, id=56, 344.78813pt x 324.46219pt>
 File: igeo.png Graphic file (type png)
+ <use igeo.png>
+Package pdftex.def Info: igeo.png used on input line 154.
+(pdftex.def)             Requested size: 241.84843pt x 227.5923pt.
 
-<use igeo.png>
-Package pdftex.def Info: igeo.png used on input line 195.
-(pdftex.def)             Requested size: 217.66211pt x 130.27567pt.
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 154--155
+ [] 
+ []
+
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 201.
+(babel)             in language  on input line 164.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 208.
- (./artigo.bbl
+(babel)             in language  on input line 164.
+[2 <./localizacao_especies.png> <./igeo.png>]
+<Scientify_name.png, id=70, 246.1697pt x 139.27031pt>
+File: Scientify_name.png Graphic file (type png)
+ <use Scientify_name.png>
+Package pdftex.def Info: Scientify_name.png used on input line 167.
+(pdftex.def)             Requested size: 241.84843pt x 136.83247pt.
+
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 167--168
+ [] 
+ []
+
+<Search_image.png, id=71, 247.67531pt x 136.25906pt>
+File: Search_image.png Graphic file (type png)
+ <use Search_image.png>
+Package pdftex.def Info: Search_image.png used on input line 175.
+(pdftex.def)             Requested size: 241.84843pt x 133.05475pt.
+
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 175--176
+ [] 
+ []
+
+<description.png, id=72, 251.43938pt x 83.5622pt>
+File: description.png Graphic file (type png)
+ <use description.png>
+Package pdftex.def Info: description.png used on input line 183.
+(pdftex.def)             Requested size: 241.84843pt x 80.37434pt.
+
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 183--184
+ [] 
+ []
+
+<userdata.png, id=74, 228.855pt x 65.49469pt>
+File: userdata.png Graphic file (type png)
+ <use userdata.png>
+Package pdftex.def Info: userdata.png used on input line 194.
+(pdftex.def)             Requested size: 217.66211pt x 62.29353pt.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 204.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 209.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 216.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 218.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 218.
+ [3 <./Scientify_name.png> <./Search_image.png> <./description.png> <./userdata
+.png>]
+<Deployment_Model.png, id=87, 362.10281pt x 234.8775pt>
+File: Deployment_Model.png Graphic file (type png)
+
+<use Deployment_Model.png>
+Package pdftex.def Info: Deployment_Model.png used on input line 222.
+(pdftex.def)             Requested size: 241.84843pt x 156.8761pt.
+
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 221--223
+ [] 
+ []
+
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 232.
+(./artigo.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 4--8
 []\T1/pplx/m/n/10.95 (+20) iGEO.  Ser-vi-ços do Por-tal iGEO.
  []
@@ -878,41 +900,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--20
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 228.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 251.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 228.
+(babel)             in language  on input line 251.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 228.
- [3 <./igeo.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 228.
+(babel)             in language  on input line 251.
+ [4 <./Deployment_Model.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 251.
  (./artigo.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 228.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 228.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 251.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 251.
 Package rerunfilecheck Info: File `artigo.out' has not changed.
-(rerunfilecheck)             Checksum: 96F8387E6F0B4C599A2F09E50AEA556B;633.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 228.
+(rerunfilecheck)             Checksum: D3F91F65E3AC53A9308EA23F39656C89;382.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 251.
  ) 
 Here is how much of TeX's memory you used:
- 9724 strings out of 493054
- 147967 string characters out of 6138326
- 274181 words of memory out of 5000000
- 12877 multiletter control sequences out of 15000+600000
- 54610 words of font info for 206 fonts, out of 8000000 for 9000
+ 9749 strings out of 493054
+ 148194 string characters out of 6138326
+ 274765 words of memory out of 5000000
+ 12887 multiletter control sequences out of 15000+600000
+ 51383 words of font info for 215 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,11n,43p,673b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,11n,43p,962b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}{c:/texlive/2015/texm
 f-dist/fonts/enc/dvips/lm/lm-ec.enc}<c:/texlive/2015/texmf-dist/fonts/type1/pub
 lic/lm/lmtt10.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.p
 fb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/
 2015/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on artigo.pdf (3 pages, 128541 bytes).
+Output written on artigo.pdf (4 pages, 151998 bytes).
 PDF statistics:
- 114 PDF objects out of 1000 (max. 8388607)
- 94 compressed objects within 1 object stream
- 22 named destinations out of 1000 (max. 500000)
- 42594 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 128 PDF objects out of 1000 (max. 8388607)
+ 102 compressed objects within 2 object streams
+ 24 named destinations out of 1000 (max. 500000)
+ 35940 words of extra memory for PDF output out of 42996 (max. 10000000)
 

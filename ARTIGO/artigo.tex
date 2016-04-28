@@ -112,19 +112,20 @@ Exploracafora é uma aplicação web que visa a exploração do mapa de Portugal
 %----------------------------------------------------------------------------------------
 
 \section{Introdução}\label{sec:intro}
-
 O projeto tem como objetivo o desenvolvimento de uma aplicação web que permite a exploração dinâmica de espécies de fauna e flora no território português. O desenvolvimento desta aplicação é motivado pela aprendizagem e descoberta dos diferentes elementos da natureza e do terreno português.
-
-Para além desta introdução, onde se caracterizou o problema abordado por este projeto, refere-se na Secção ~\ref{sec:sota} o estado da arte e são descritas aplicações que abordam a mesma temática. Na Secção ~\ref{sec:application} está descrita com mais detalhe a aplicação a desenvolver. Na Secção ~\ref{sec:datamodel} são abordadas as fontes de dados a utilizar para obter as diversas informações necessárias para representar o mapa e mostrar toda a informação sobre os seres vivos presentes na aplicação. De seguida na Secção ~\ref{sec:metod} está presente a metodologia a seguir no desenvolvimento do projeto.
-
+Para além desta introdução, onde se caracterizou o problema abordado por este projeto, refere-se na Secção ~\ref{sec:sota} o estado da arte e são descritas aplicações que abordam a mesma temática e as tecnologias a utilizar. Na Secção ~\ref{sec:application} está descrita com mais detalhe a aplicação a desenvolver. Na Secção ~\ref{sec:datamodel} são abordadas as fontes de dados a utilizar para obter as diversas informações necessárias para representar o mapa e mostrar toda a informação sobre os seres vivos presentes na aplicação. De seguida na Secção ~\ref{sec:metod} está presente a metodologia a seguir no desenvolvimento do projeto. Na Secção ~\ref{sec:requisitos} estão presentes os requisitos de utilizador levantados. A seguir, na secção ~\ref{sec:arquitetura} apresenta-se a aquitetura do projeto com identificação do fluxo de comunicação entre as diversas tecnologias utilizadas.
 
 %------------------------------------------------
 
 \section{Estado da arte}\label{sec:sota}
 
-Existem várias aplicações que permitem a pesquisa de vários tipos de animais ou de plantas, normalmente estas aplicações mostram informação de uma dada espécie depois do utilizador introduzir o nome comum ou científico do animal que procura. Outras aplicações permitem a descoberta de animais exibindo fotografias com informação anexada dos animais. Estas aplicações focam-se normalmente em contextos como animais raros, marinhos, extintos, voadores, etc.
+Existem várias aplicações que permitem a pesquisa de vários tipos de animais ou de plantas. Normalmente estas aplicações mostram informação de uma dada espécie depois do utilizador introduzir o nome comum ou cientifico do animal que procura. Outras aplicações permitem a descoberta de animais exibindo fotografias com informação anexada dos animais. Estas aplicações focam-se normalmente em contextos como animais raros, marinhos, extintos, voadores, etc. Como exemplo destas aplicações existe a Species Explorer e a Rare Species Explorer.
 
-O conceito da aplicação a desenvolver serão os seres vivos existentes no território português e ao contrário das aplicações existentes, esta foca-se na exploração, ou seja, o utilizador é convidado a viajar por Portugal para que possa explorar e ter conhecimento das espécies existentes em cada região, tornado assim a aquisição de conhecimento mais interativa e dinâmica.
+Existem também aplicações dedicadas exclusivamente à descoberta do mapa do mundo, utilizando o mesmo mecanismo presente na Exploracafora, começando com o mapa encoberto e descobrir à medida que o utilizador viaja pelo mundo. Um exemplo dessas aplicações é a Umbra.
+
+A aplicação desenvolvida tem como âmbito os seres vivos existentes no território português e ao contrário das aplicações existentes, esta foca-se na exploração, ou seja, o utilizador é convidado a viajar por Portugal para que possa explorar e ter conhecimento das espécies existentes em cada região, tornado assim a aquisição de conhecimento mais interativa e dinâmica.
+
+Para desenvolver o trabalho escolheu-se PostgreSQL com a extensão Postgis para a base de dados, pois facilita a representação de informação geográfica. Esta extensão permite por exemplo guardar as localizações de cada espécie na forma de polígonos e obter as localizações que contêm um dado ponto geográfico, como a localização do utilizador. Sendo uma aplicação web para dispositivos móveis, desenvolvemos a interface com HTML5, CSS3, Bootstrap e javascript. O servidor é implementado em Nodejs por ser uma tecnologia bastante utilizada atualmente e pelo interesse do grupo em experimentá-la.
 
 %------------------------------------------------
 
@@ -135,79 +136,101 @@ A Exploracafora é uma aplicação que permite conjugar a visualização do mapa
 O utilizador poderá encontrar na aplicação informação sobre plantas, insetos, aranhas, bivalves, gastrópodes, peixes, anfíbios, répteis e mamíferos existentes em Portugal. 
 
 \section{Fontes de dados}\label{sec:datamodel}
+Utilizam-se várias fontes para reunir toda a informação necessária. São usados serviços do portal iGEO (informação Geográfica) para obter as espécies existentes num dado ponto de Portugal, estes serviços indicam para cada ser vivo as regiões de Portugal onde estes existem.~\cite{igeo} Essas regiões são definidas por vértices de polígonos com coordenadas GPS. Desenvolveu-se um pequeno programa em java que recolhe toda a informação de cada serviço do portal iGEIO em XML e através da utilização de JDOM, para interpretar as respostas, gera um ficheiro com as instruções necessárias para introduzir os dados na base de dados em SQL. Apresenta-se na figura \ref{fig:localizacoes} o modelo de dados utilizado na base de dados SQL. 
 
-Utilizar-se-ão várias fontes para reunir toda a informação necessária. Serão usados serviços do portal iGEO (informação Geográfica) para obter as espécies existentes num dado ponto de Portugal, estes serviços indicam para cada ser vivo as regiões de Portugal onde estes existem.~\cite{igeo} Essas regiões são definidas por vértices de polígonos com coordenas GPS. 
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=0.50\textwidth]{localizacao_especies}
+		\caption{Modelo de dados das espécies e respetivas localizações}
+		\label{fig:localizacoes}
+	\end{center}
+\end{figure} 
 
-Em complementaridade com estes serviços recorre-se a uma API do site GBIF (\emph{Global Biodiversity Information Facility}) para obter informação mais detalhada sobre cada espécie, como reino, família, imagens, etc.~\cite{gbif} Esta API reúne informação de diversas fontes, contendo no momento informação sobre aproximadamente 1,650,00 espécies. Por fim é necessário recorrer ao Google Maps para mostrar o mapa de Portugal e toda a informação a ele associada.~\cite{googlemaps}
 
-O modelo de dados da API GBIF depende do serviço utilizado, pretende-se utilizar o serviço de pesquisa pelo nome científico de um ser vivo, que devolve um conjunto de registos sobre a espécie pesquisada. No caso de se obter um registo com uma referência para a página da Wikipédia, pretende-se utilizar a key dessa referência para obter a imagem utilizada nessa mesma página para identificar o ser vivo e ainda obter a descrição inicial. 
+O modelo de dados das respostas do portal iGEO é apresentado na figura \ref{fig:igeo}. Consiste numa coleção de elementos que contêm o nome científico e vulgar, o id e as regiões do mapa, conjunto de coordenadas GPS que definem um polígono, onde estas estão presentes.
 
-\subsection{Modelo da pesquisa por nome científico:}
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=0.50\textwidth]{igeo}
+		\caption{Modelo de dados dos serviços do portal iGEO}
+		\label{fig:igeo}
+	\end{center}
+\end{figure} 
+
+
+Em complementaridade com estes serviços recorre-se a uma API do site GBIF (Global Biodiversity Information Facility) para obter informação mais detalhada sobre cada espécie, como reino, família, imagens, etc. Esta API reúne informação de diversas fontes, contendo no momento informação sobre aproximadamente 1,650,00 espécies. Por fim é necessário recorrer ao Google Maps para mostrar o mapa de Portugal e toda a informação a ele associada.
+
+	O modelo de dados da API GBIF depende do serviço utilizado. Pretende-se utilizar o serviço de pesquisa pelo nome científico de um ser vivo, que devolve um conjunto de registos sobre a espécie pesquisada, o modelo está representado na figura  \ref{fig:scientName}. No caso de se obter um registo com uma referência para a página da Wikipédia, pretende-se utilizar a chave dessa referência para obter o conteúdo multimédia, tipicamente uma imagem, utilizada nessa mesma página para identificar o ser vivo e ainda obter a descrição inicial. O modelo das respostas ao conteúdo multimédia e à descrição do servivo estão presentes na imagem \ref{fig:multimedia} e na imagem \ref{fig:descricao}, respetivamente.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=0.50\textwidth]{Scientify_name}
+		\caption{Modelo da pesquisa por nome científico}
+		\label{fig:scientName}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=0.50\textwidth]{Search_image}
+		\caption{Modelo da resposta  para obter a imagem do animal na Wikipédia}
+		\label{fig:multimedia}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=0.50\textwidth]{description}
+		\caption{Formato da resposta para obter a descrição do animal da página da Wikipédia}
+		\label{fig:descricao}
+	\end{center}
+\end{figure} 
+
+Na base de dados pretende-se ainda guardar os percursos que o utilizar percorreu, para isso representa-se o mapa como uma grelha, com um valor binário a indicar se o utilizador já esteve em cada célula da grelha. O modelo de dados é apresentado na figura  \ref{fig:userdata}.
 
 \begin{figure}[ht!]
 	\begin{center}
 		\leavevmode
-		\includegraphics[width=0.18\textwidth,height=0.24\textheight]{Search_by_Scientify_Name}
-		\caption{Procura por nome científico}
-		\label{fig:arch}
+		\includegraphics[width=0.45\textwidth]{userdata}
+		\caption{Modelo de dados para guardar a informação dos percursos do utilizador}
+		\label{fig:userdata}
 	\end{center}
-\end{figure}
-
-\subsection{Modelo da resposta  para obter a imagem do animal na Wikipédia:}
-
-\begin{figure}[ht!]
-	\begin{center}
-		\leavevmode
-		\includegraphics[width=0.18\textwidth,height=0.18\textheight]{Search_by_key}
-		\caption{Procura por imagem da Wikipédia}
-		\label{fig:arch}
-	\end{center}
-\end{figure}
-
-\subsection{Formato da resposta para obter a descrição do animal da página da Wikipédia:}
-
-\begin{figure}[ht!]
-	\begin{center}
-		\leavevmode
-		\includegraphics[width=0.18\textwidth,height=0.20\textheight]{Search_by_description}
-		\caption{Procura por descrição da Wikipédia}
-		\label{fig:arch}
-	\end{center}
-\end{figure}
-
-Na base de dados pretende-se guardar a informação necessária para fazer tracking do utilizador, para isso basta guardar os dados do mesmo e os seus percursos. Os percursos consistem em conjuntos de coordenadas GPS, que se pretende guardar em formato XML.
-
-\begin{figure}[ht!]
-	\begin{center}
-		\leavevmode
-		\includegraphics[width=0.45\textwidth,height=0.09\textheight]{Tracking_db}
-		\caption{Tracking do user}
-		\label{fig:arch}
-	\end{center}
-\end{figure}
+\end{figure} 
 
 
-O modelo de dados das respostas do portal iGEO é apresentado de seguida, consiste numa coleção de elementos que contem o nome cientifico e vulgar, um id e as regiões do mapa(shape) onde estas estão presentes.
 
-\begin{figure}[ht!]
-	\begin{center}
-		\leavevmode
-		\includegraphics[width=0.45\textwidth]{igeo}
-		\caption{IGEO}
-		\label{fig:arch}
-	\end{center}
-\end{figure}
+%------------------------------------------------
 
 \section{Metodologia}\label{sec:metod}
 A construção do projeto está dividida em várias etapas: a análise do formato dos dados das múltiplas fontes, a decisão do tipo de armazenamento e processamento dos dados, a identificação de requisitos e tecnologias a utilizar, a elaboração da arquitetura e desenvolvimento de código final da aplicação e dos web services da nossa API.
+
+%------------------------------------------------
+
+\section{Requisitos}\label{sec:requisitos}
+De modo a satisfazer todas as necessidades do utilizador final e garantir que todas as funcionalidades são apresentadas de forma explícita, serão apresentados os requisitos, na primeira pessoa, que a aplicação deve disponibilizar ao utilizador.
+ Como utilizador quero ver as espécies que existem perto da minha localização, visualizar áreas já exploradas por mim, ver toda a informação acerca de uma espécie, poder procurar no mapa áreas onde se encontra certa fauna ou flora e ter acesso a um catálogo com todas as espécies descobertas e por descobrir.
+	A aplicação web vai necessitar de internet e serviços de localização para que possa funcionar nas condições normais. 
+
+%------------------------------------------------
+
+\section{Arquitetura}\label{sec:arquitetura}
+A arquitetura é constituída por um servidor que vai comunicar com as diferentes APIs. Para a base de dados foi escolhido o PostGIS, que é uma base de dados espacial estendida do PostgreSQL, na qual são suportados objetos geográficos que permitem a ocorrência de perguntas de localização em SQL. Para implementação do mapa, é usado os serviços do Google Maps e como fonte de informação para as espécies será usado a API do GBIF (Global Biodiversity Information Facility). O esquema da arquitetura é apresentado na figura \ref{fig:arq}.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\leavevmode
+		\includegraphics[width=0.50\textwidth]{Deployment_Model}
+		\caption{Esquema da arquitetura}
+		\label{fig:arq}
+	\end{center}
+\end{figure} 
 
 
 
 %------------------------------------------------
 
 \section{Conclusão}\label{sec:conclusions}
-
-	Neste artigo abordou-se o desenvolvimento de um protótipo, com vista a estudar a viabilidade da aplicação pretendida, assim como todos os componentes necessário para a construção da aplicação.
+Neste artigo apresentou-se o tema e funcionalidades da aplicação final, as fontes de dados que são usadas, os requisitos finais, as tecnologias utilizadas e ainda a forma como interagem. Para validar a arquitetura desenhada e tecnologias escolhidas foi implementado um pequeno protótipo da aplicação Exploracafora. 
 
 
 %----------------------------------------------------------------------------------------
