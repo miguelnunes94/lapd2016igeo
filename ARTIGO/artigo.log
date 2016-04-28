@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.11.19)  28 APR 2016 17:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.11.19)  28 APR 2016 20:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -790,7 +790,7 @@ Package babel Info: Redefining portuges shorthand "|
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 138.
 
-<localizacao_especies.png, id=53, 307.90031pt x 67.75313pt>
+<localizacao_especies.png, id=64, 307.90031pt x 67.75313pt>
 File: localizacao_especies.png Graphic file (type png)
 
 <use localizacao_especies.png>
@@ -803,7 +803,7 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 143--144
 
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <10> not available
 (Font)              Font shape `T1/pplx/b/n' tried instead on input line 144.
-<igeo.png, id=56, 344.78813pt x 324.46219pt>
+<igeo.png, id=67, 344.78813pt x 324.46219pt>
 File: igeo.png Graphic file (type png)
  <use igeo.png>
 Package pdftex.def Info: igeo.png used on input line 154.
@@ -818,7 +818,7 @@ Package babel Info: Redefining portuges shorthand "|
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 164.
 [2 <./localizacao_especies.png> <./igeo.png>]
-<Scientify_name.png, id=70, 246.1697pt x 139.27031pt>
+<Scientify_name.png, id=86, 246.1697pt x 139.27031pt>
 File: Scientify_name.png Graphic file (type png)
  <use Scientify_name.png>
 Package pdftex.def Info: Scientify_name.png used on input line 167.
@@ -828,7 +828,7 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 167--168
  [] 
  []
 
-<Search_image.png, id=71, 247.67531pt x 136.25906pt>
+<Search_image.png, id=87, 247.67531pt x 136.25906pt>
 File: Search_image.png Graphic file (type png)
  <use Search_image.png>
 Package pdftex.def Info: Search_image.png used on input line 175.
@@ -838,7 +838,7 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 175--176
  [] 
  []
 
-<description.png, id=72, 251.43938pt x 83.5622pt>
+<description.png, id=88, 251.43938pt x 83.5622pt>
 File: description.png Graphic file (type png)
  <use description.png>
 Package pdftex.def Info: description.png used on input line 183.
@@ -848,7 +848,7 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 183--184
  [] 
  []
 
-<userdata.png, id=74, 228.855pt x 65.49469pt>
+<userdata.png, id=90, 228.855pt x 65.49469pt>
 File: userdata.png Graphic file (type png)
  <use userdata.png>
 Package pdftex.def Info: userdata.png used on input line 194.
@@ -865,7 +865,7 @@ Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 218.
  [3 <./Scientify_name.png> <./Search_image.png> <./description.png> <./userdata
 .png>]
-<Deployment_Model.png, id=87, 362.10281pt x 234.8775pt>
+<Deployment_Model.png, id=103, 362.10281pt x 234.8775pt>
 File: Deployment_Model.png Graphic file (type png)
 
 <use Deployment_Model.png>
@@ -879,23 +879,62 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 221--223
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 232.
 (./artigo.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 4--8
+Underfull \hbox (badness 2158) in paragraph at lines 4--9
+[]\T1/pplx/m/n/10.95 (+20) Phantom App De-ve-lop-ment.  Spe-cies
+ []
+
+
+Underfull \hbox (badness 7576) in paragraph at lines 4--9
+\T1/pplx/m/n/10.95 (+20) Ex-plo-rer.  [][]$\T1/lmtt/m/n/10.95 https : / / play 
+. google . com /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
+\T1/lmtt/m/n/10.95 store / apps / details ? id = air . im . phantom .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--22
+[]\T1/pplx/m/n/10.95 (+20) Vasile Ju-res-chi.  Um-bra.  [][]$\T1/lmtt/m/n/10.95
+ https :
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--22
+\T1/lmtt/m/n/10.95 / / play . google . com / store / apps /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--22
+\T1/lmtt/m/n/10.95 details ? id = org . unchiujar . umbra2$[][]\T1/pplx/m/n/10.
+95 (+20) .
+ []
+
+
+Underfull \hbox (badness 5578) in paragraph at lines 24--28
+\T1/pplx/m/n/10.95 (+20) Post-greSQL.  [][]$\T1/lmtt/m/n/10.95 http : / / www .
+ postgresql .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 42--46
 []\T1/pplx/m/n/10.95 (+20) iGEO.  Ser-vi-ços do Por-tal iGEO.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4--8
+Underfull \hbox (badness 10000) in paragraph at lines 42--46
 [][]$\T1/lmtt/m/n/10.95 http : / / www . igeo . pt / DadosAbertos /
  []
 
 
-Underfull \hbox (badness 1817) in paragraph at lines 16--20
+Underfull \hbox (badness 1817) in paragraph at lines 54--58
 []\T1/pplx/m/n/10.95 (+20) Google.  Go-o-gle Maps API.  [][]$\T1/lmtt/m/n/10.95
  https :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 16--20
+Underfull \hbox (badness 10000) in paragraph at lines 54--58
 \T1/lmtt/m/n/10.95 / / developers . google . com / maps /
  []
 
@@ -912,14 +951,18 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 251.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 251.
 Package rerunfilecheck Info: File `artigo.out' has not changed.
 (rerunfilecheck)             Checksum: D3F91F65E3AC53A9308EA23F39656C89;382.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 251.
  ) 
 Here is how much of TeX's memory you used:
- 9749 strings out of 493054
- 148194 string characters out of 6138326
- 274765 words of memory out of 5000000
- 12887 multiletter control sequences out of 15000+600000
- 51383 words of font info for 215 fonts, out of 8000000 for 9000
+ 9770 strings out of 493054
+ 148416 string characters out of 6138326
+ 275951 words of memory out of 5000000
+ 12894 multiletter control sequences out of 15000+600000
+ 51829 words of font info for 221 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,11n,43p,962b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}{c:/texlive/2015/texm
@@ -927,10 +970,10 @@ f-dist/fonts/enc/dvips/lm/lm-ec.enc}<c:/texlive/2015/texmf-dist/fonts/type1/pub
 lic/lm/lmtt10.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.p
 fb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/
 2015/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on artigo.pdf (4 pages, 151998 bytes).
+Output written on artigo.pdf (4 pages, 155399 bytes).
 PDF statistics:
- 128 PDF objects out of 1000 (max. 8388607)
- 102 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
+ 156 PDF objects out of 1000 (max. 8388607)
+ 130 compressed objects within 2 object streams
+ 30 named destinations out of 1000 (max. 500000)
  35940 words of extra memory for PDF output out of 42996 (max. 10000000)
 

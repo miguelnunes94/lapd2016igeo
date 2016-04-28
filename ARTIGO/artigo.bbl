@@ -1,5 +1,43 @@
 \begin{thebibliography}{1}
 
+\bibitem{speciesexplorer}
+Phantom~App Development.
+\newblock {Species Explorer}.
+\newblock
+  \url{https://play.google.com/store/apps/details?id=air.im.phantom.species&hl=pt_PT}.
+\newblock Acedido em Maio, 2016.
+
+\bibitem{rarespecies}
+Michigan Natural~Features Inventory.
+\newblock {Rare Species Explorer}.
+\newblock \url{https://mnfi.anr.msu.edu/explorer/search.cfm}.
+\newblock Acedido em Maio, 2016.
+
+\bibitem{umbra}
+Vasile Jureschi.
+\newblock {Umbra}.
+\newblock
+  \url{https://play.google.com/store/apps/details?id=org.unchiujar.umbra2}.
+\newblock Acedido em Maio, 2016.
+
+\bibitem{postgresql}
+PostgreSQL Global~Development Group.
+\newblock {PostgreSQL}.
+\newblock \url{http://www.postgresql.org/}.
+\newblock Acedido em Maio, 2016.
+
+\bibitem{postgis}
+PostGIS Project~Steering Committee.
+\newblock {Postgis}.
+\newblock \url{http://postgis.net/}.
+\newblock Acedido em Maio, 2016.
+
+\bibitem{nodejs}
+Node.js Foundation.
+\newblock {Node.js}.
+\newblock \url{https://nodejs.org/en/}.
+\newblock Acedido em Maio, 2016.
+
 \bibitem{igeo}
 iGEO.
 \newblock {Serviços do Portal iGEO}.
