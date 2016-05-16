@@ -181,6 +181,8 @@ app.post('/api/userSpeciesFromLocation', urlencodedParser, function (req, res) {
 app.get('/catalog', function (req, res) {
     if (req.session.loggedin) {
         sendHTML(res, "catalog", {username: req.session.username});
+    }else{
+        res.redirect('/');
     }
 });
 app.get('/api/catalog', function (req, res) {
