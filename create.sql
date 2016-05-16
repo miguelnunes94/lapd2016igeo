@@ -33,6 +33,13 @@ CREATE TABLE locations(
 	location GEOGRAPHY(POLYGON,4326),
 	PRIMARY KEY (locationID)	
 );
+
+CREATE TABLE userspecies(
+    specieID int references species(specieID),
+    userID int references users(userID),
+    PRIMARY KEY(userID,specieID)
+);
+
 /*
 INSERT INTO species (specieID, scientificName, nomevulgar) VALUES (1, 'Teste', 'teste');
 INSERT INTO locations (specieID,location) VALUES (1, ST_GeographyFromText('SRID=4326;POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))') );

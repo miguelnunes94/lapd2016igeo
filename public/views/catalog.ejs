@@ -11,11 +11,9 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-
+    <script src="js/catalog.js"></script>
     <link href="css/index.css" rel="stylesheet">
-    <script src="js/maps.js"></script>
-    <script src="js/fog.js"></script>
-    <script src="js/species.js"></script>
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 </head>
 <body>
 <nav id="menu_div" class="navbar navbar-default navbar-static-top">
@@ -32,14 +30,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catalog <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="catalog">Known Species</a></li>
-                    <li><a href="catalog">Unknown Species</a></li>
-                  </ul>
-                </li>
+                <li ><a href="/">Home</a></li>
+                <li class="active"><a href="catalog">Catalog</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Welcome: <%= username %></a></li>
@@ -48,16 +40,8 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-<div id="main_div" class="">
-    <div id="" class="div_borders div_full_height">
-        <div class="div_full_height">
-            <div id="map" class="div_full_height"></div>
-        </div>
-    </div>
-    <div id="showSpecies" class="div_borders">
-    </div>
+<div id="owned" class="w3-container row">
 
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
 </body>
 </html>

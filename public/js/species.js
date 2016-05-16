@@ -66,3 +66,11 @@ function loadLocationFromSpecies(especie){
 		} );
 	} );
 }
+
+function addUserSpeciesFromLocation(lat, long) {
+    $.ajax({
+        method: "POST",
+        url: "/api/userSpeciesFromLocation",
+        data: {lat: lat, long:long}
+    });
+}

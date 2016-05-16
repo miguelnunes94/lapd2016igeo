@@ -140,7 +140,72 @@ app.get('/api/getLocationFromSpecies', function (req, res) {
         });
     });
 });
+/**
+ * inserir as especies que estão na posição do user na sua coleção
+ */
+app.post('/api/userSpeciesFromLocation', urlencodedParser, function (req, res) {
+    if (req.session.loggedin) {
+        var userID = req.session.userid;
+        var lat = req.body.lat;
+        var long = req.body.long;
+        var client = new pg.Client(conString);
+        client.connect(function (err) {
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
+            client.query("select distinct specieID "
+                + " from locations "
+                + " where specieID not in (select specieID from userspecies where userID=" + userID + ") "
+                + " and st_covers(location, ST_GeographyFromText('SRID=4326;POINT(" + lat + " " + long + ")'));",
+                function (err, result) {
+                    if (err) {
+                        return console.error('error running query', err);
+                    }
+                    for (var i = 0; i < result.rows.length; i++) {
+                        console.error(result.rows[i].specieid);
+                        var i2 = i;
+                        var query = client.query("insert into userspecies (userID,specieID) " +
+                            "values (" + userID + "," + result.rows[i].specieid + ")");
+                        query.on("end", function (result) {
+                            console.error(result);
+                            if (i2 == result.rows.length - 1)
+                                client.end();
+                        });
+                    }
+                });
+        });
+    }
+});
 
+
+app.get('/catalog', function (req, res) {
+    if (req.session.loggedin) {
+        sendHTML(res, "catalog", {username: req.session.username});
+    }
+});
+app.get('/api/catalog', function (req, res) {
+    if (req.session.loggedin) {
+        var userID = req.session.userid;
+        var client = new pg.Client(conString);
+        client.connect(function (err) {
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
+            client.query("select distinct locations.specieID, scientificName, nomevulgar"
+                + " from locations, userspecies , species  "
+                + " where locations.specieID = userspecies.specieID"
+                + " and species.specieID = locations.specieID"
+                + " and userspecies.userID=" + userID + ";", function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({result: result.rows}));
+                client.end();
+            });
+        });
+    }
+});
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
 var port = Number(process.env.PORT || 3000);
