@@ -18,36 +18,8 @@
     <script src="js/species.js"></script>
 </head>
 <body>
-<nav id="menu_div" class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Exploracafora</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catalog <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="catalog">Known Species</a></li>
-                    <li><a href="catalog">Unknown Species</a></li>
-                  </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Welcome: <%= username %></a></li>
-                <li class="active"><a id="logout" href="#">Logout</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
+<% include ./partials/headerMenu %>
+
 <div id="main_div" class="">
     <div id="" class="div_borders div_full_height">
         <div class="div_full_height">
@@ -56,7 +28,6 @@
     </div>
     <div id="showSpecies" class="div_borders">
     </div>
-
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
 </body>

@@ -185,17 +185,27 @@ app.get('/catalog', function (req, res) {
 });
 app.get('/api/catalog', function (req, res) {
     if (req.session.loggedin) {
+        var known = req.query.known;
         var userID = req.session.userid;
         var client = new pg.Client(conString);
+        var select = "";
+        if(known=='true'){
+            console.error(true);
+            select = "select distinct species.specieID, scientificName, nomevulgar"
+                + " from userspecies , species  "
+                + " where species.specieID = userspecies.specieID"
+                + " and userspecies.userID=" + userID + ";"
+        }else if(known=='false'){
+            console.error(false);
+            select = "select distinct species.specieID, scientificName, nomevulgar"
+            + " from species"
+            + " where species.specieID not in (select specieID from userspecies where userID="+userID+")";
+        }
         client.connect(function (err) {
             if (err) {
                 return console.error('could not connect to postgres', err);
             }
-            client.query("select distinct locations.specieID, scientificName, nomevulgar"
-                + " from locations, userspecies , species  "
-                + " where locations.specieID = userspecies.specieID"
-                + " and species.specieID = locations.specieID"
-                + " and userspecies.userID=" + userID + ";", function (err, result) {
+            client.query(select, function (err, result) {
                 if (err) {
                     return console.error('error running query', err);
                 }
