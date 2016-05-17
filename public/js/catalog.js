@@ -28,7 +28,7 @@ function card(div, value, known) {
     var index = known ? 0 : 1;
     var opacity = known ? 1 : 0.3;
     var numVulgar = (value.nomevulgar.trim()=='Não tem') ? '<br>' : value.nomevulgar.trim();
-    div.append('<div class="col-md-6 col-xs-6 col-lg-6" style="background-color: gray ;'
+    div.append('<div style="background-color: gray ;'
         + '  padding: 5px; z-index:' + index + '; opacity: ' + opacity + '">'
         + '<div class="w3-card-12" style="background-color: white;">'
         + '<img class="img-responsive center-block" '

@@ -14,11 +14,27 @@
     <script src="js/catalog.js"></script>
     <link href="css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <style type="text/css">
+        .auto-grid {
+            -moz-column-count: 2;
+            -moz-column-gap: 10px;
+            -webkit-column-count: 2;
+            -webkit-column-gap: 10px;
+            column-count: 2;
+            column-gap: 10px;
+            width: auto;
+        }
+
+        .auto-grid > div {
+            display: inline-block;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <% include ./partials/headerMenu %>
 <div class="w3-container row">
-    <div class="col-md-12 col-xs-12 col-lg-12" style="background-color: gray; padding: 5px;">
+    <div class="col-md-12 col-xs-12 col-lg-12" style="background-color: gray;">
         <div class="w3-card-12" style="background-color: white;">
             <div class="w3-container w3-center">
                 <p id="numSpecies"></p>
@@ -26,10 +42,10 @@
         </div>
     </div>
 </div>
-<div id="known" class="w3-container row">
+<div id="known" class="w3-container row auto-grid">
 
 </div>
-<div id="unknown" class="w3-container row">
+<div id="unknown" class="w3-container row auto-grid">
 
 </div>
 </body>
