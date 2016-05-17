@@ -192,13 +192,11 @@ app.get('/api/catalog', function (req, res) {
         var client = new pg.Client(conString);
         var select = "";
         if(known=='true'){
-            console.error(true);
             select = "select distinct species.specieID, scientificName, nomevulgar"
                 + " from userspecies , species  "
                 + " where species.specieID = userspecies.specieID"
                 + " and userspecies.userID=" + userID + ";"
         }else if(known=='false'){
-            console.error(false);
             select = "select distinct species.specieID, scientificName, nomevulgar"
             + " from species"
             + " where species.specieID not in (select specieID from userspecies where userID="+userID+")";
