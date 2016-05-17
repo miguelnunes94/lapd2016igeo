@@ -71,7 +71,8 @@ function sucessUserLocation(position) {
 /* chamada quando à um erro ao receber a localização do google*/
 function errorUserLocation(err) {
     log(err.message);
-    getUserLocation();
+    alert("errorUserLocation "+err.message);
+    //getUserLocation();
     //window.location.replace('/');
 }
 
