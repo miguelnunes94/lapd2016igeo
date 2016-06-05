@@ -111,6 +111,30 @@ app.post('/register', urlencodedParser, function (req, res) {
     });
 });*/
 
+/* quick&dirty fix */
+app.get('/dropSetUsers', function (req, res) {
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("DROP TABLE IF EXISTS users;\n\
+CREATE TABLE users(\n\
+	userID SERIAL,\n\
+	username char(50) UNIQUE,\n\
+	password char(256),\n\
+	email char(256),\n\
+	fogs integer[33768],\n\
+	PRIMARY KEY(userID)\n\
+);", function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            client.end();
+        });
+    });
+});
+
 /* GET fogs para um utilizador*/
 app.get('/api/getFogsFromUser', function (req, res) {
 	if (req.session.loggedin) {
