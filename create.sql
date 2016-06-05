@@ -10,6 +10,7 @@ CREATE TABLE users(
 	username char(50) UNIQUE,
 	password char(256),
 	email char(256),
+	fogs integer[33768],
 	PRIMARY KEY(userID)
 );
 

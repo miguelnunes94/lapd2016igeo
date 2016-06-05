@@ -83,14 +83,53 @@ app.post('/register', urlencodedParser, function (req, res) {
     else {
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("insert into users (username,password,email) " +
+        var query = client.query("insert into users (username,password,email,fogs) " +
             "values ('" + req.body.username + "','" +
-            req.body.password + "','" + req.body.email + "')");
+            req.body.password + "','" + req.body.email + "',array_fill(0, ARRAY[33768]))");
         query.on("end", function (result) {
             client.end();
             res.redirect('/');
         });
     }
+});
+
+/* UPDATE fogs para um utilizador*/
+/*app.get('/api/updateFogsForUser', function (req, res) {
+    var user = req.query.user;
+	var fogs = req.query.fogs;
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("update users set fogs["+fogs[i]+"] = 1 where username='" + user + "';", function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            client.end();
+        });
+    });
+});*/
+
+/* GET fogs para um utilizador*/
+app.get('/api/getFogsFromUser', function (req, res) {
+	if (req.session.loggedin) {
+        var userID = req.session.userid;
+		var client = new pg.Client(conString);
+		client.connect(function (err) {
+			if (err) {
+				return console.error('could not connect to postgres', err);
+			}
+			client.query("select fogs from users where userID=" + userID + ";", function (err, result) {
+				if (err) {
+					return console.error('error running query', err);
+				}
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify({result: result.rows}));
+				client.end();
+			});
+		});
+	}
 });
 
 /* GET especie para uma localizacao*/

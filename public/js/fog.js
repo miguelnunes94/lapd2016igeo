@@ -159,6 +159,19 @@ function initFog(){
 	addClick();
 }
 
+function loadFogsFromUser(){
+	$.ajax( {
+		method: "GET",
+		url: "/api/getFogsFromUser",
+		data: {}
+	} ).done( function(data){
+		console.log(data);
+		data.result.forEach( function(res,i){
+			//do something.
+		} );
+	} );
+}
+
 function cOverlay(map){
 	this.setMap(map);
 }
