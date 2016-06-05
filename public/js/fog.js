@@ -4,7 +4,12 @@ var cBounds,
 	r1 = Math.round(Math.sqrt(2*(squareSize*squareSize))/2*100)/100,
 	r2 = Math.round(r1*4/3*100)/100,
 	canvas = document.createElement("canvas"),
-	draw;
+	draw,
+	fogArray,
+	sendArray = [];
+//w=670, w/5=134
+//h=1260, h/5=252
+//134*252=33768 possible fog positions (~33kb)
 
 //Used to clear unused parts of the map:
 var ppr = [
@@ -77,6 +82,10 @@ function clearMap(){
 
 /*iniciar o fog:*/
 function initFog(){
+	fogArray = new Array( 33768 );
+	for(var i=0;i<fogArray.length;i++)
+		fogArray[i]=0;
+	
 	cBounds = new google.maps.LatLngBounds(
 		new google.maps.LatLng(36.88,-9.78),//SW,lat,lng
 		new google.maps.LatLng(42.21,-6.09)//NE,lat,lng
@@ -136,6 +145,17 @@ function initFog(){
 	draw.globalCompositeOperation=dgCO;
 	draw.fillStyle=dfS;
 	
+	//TODO: GET ARRAY FROM SERVER HERE.
+	//fogArray = getArrayFromServer(...);
+	for(var x=0;x<134;x++){
+		for(var y=0;y<252;y++){
+			if(fogArray[y*134+x]==1){
+				light_grid(x,y);
+			}
+		}
+	}
+	
+	//Remove this.
 	addClick();
 }
 
@@ -169,9 +189,22 @@ function map_light( latLng ){
 
 /*clear area near clicked points*/
 function light(x,y){
+	//Get a proper "x and y" in-array position.
+	x = Math.floor(x/squareSize);
+	y = Math.floor(y/squareSize);
+	if(fogArray[y*134+x]==1)
+		return;
+	fogArray[y*134+x] = 1;
+	sendArray.push(y*134+x);
+	light_grid(x,y);
+}
+
+function light_grid(x,y){
 	//Get the position "in the grid".
-	x = squareSize*(0.5+Math.floor(x/squareSize));
-	y = squareSize*(0.5+Math.floor(y/squareSize));
+	x += 0.5;
+	y += 0.5;
+	x *= squareSize;
+	y *= squareSize;
 	//Clear the position.
 	var dgCO = draw.globalCompositeOperation;
 	var dfS = draw.fillStyle;
@@ -186,4 +219,12 @@ function light(x,y){
 	draw.fill();
 	draw.globalCompositeOperation=dgCO;
 	draw.fillStyle=dfS;
+}
+
+function updateServerArray(){
+	if(sendArray.length > 0){
+		//send array to server entirely.
+		sendArray = []; //Clear the array.
+	}
+	//Otherwise, if the array is empty, do nothing.
 }
