@@ -215,8 +215,10 @@ function line(nx,ny){
 		light(nx,ny);
 	} else {
 		var len = Math.sqrt( (px-nx)*(px-nx)+(py-ny)*(py-ny) );
+		var xx = (nx-px)/len;
+		var yy = (ny-py)/len;
 		for(var i=0;i<len;i++)
-			light( Math.round( px+(nx-px)*i/lineLength ), Math.round( py+(ny-py)*i/lineLength ) );
+			light( Math.round( px + xx*i ), Math.round( py + yy*i ) );
 	}
 	px=nx;
 	py=ny;
