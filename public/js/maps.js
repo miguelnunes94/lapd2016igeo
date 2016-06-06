@@ -80,7 +80,7 @@ function errorUserLocation(err) {
 
 /* chamada quando o user muda de localização */
 function t_success( crd ){
-	if( crd == undefined || crd.coord == undefined || crd.coords.latitude == undefined || crd.coords.longitude == undefined )
+	if( crd == undefined || crd.coords == undefined || crd.coords.latitude == undefined || crd.coords.longitude == undefined )
 		return;
 	coords = crd.coords;
 	log("coords: " + coords.latitude + " " + coords.longitude);
