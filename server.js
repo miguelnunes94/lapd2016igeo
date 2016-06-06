@@ -96,14 +96,6 @@ app.post('/register', urlencodedParser, function (req, res) {
 /* UPDATE fogs para um utilizador*/
 app.get('/api/updateFogsForUser', function (req, res) {
 	if (req.session.loggedin) {
-			client.query("select fogs from users where userID=" + userID + ";", function (err, result) {
-				if (err) {
-					return console.error('error running query', err);
-				}
-				res.setHeader('Content-Type', 'application/json');
-				res.send(JSON.stringify({result: result.rows}));
-				client.end();
-			});
 		var userID = req.session.userid;
 		var seen = req.query.seen;
 		var client = new pg.Client(conString);
@@ -233,6 +225,8 @@ app.post('/api/userSpeciesFromLocation', urlencodedParser, function (req, res) {
 		var lat = req.body.lat;
 		var long = req.body.long;
 		var client = new pg.Client(conString);
+		res.setHeader('Content-Type', 'application/json');
+		res.send(JSON.stringify({result:"success"})); //To stop it from timing out.
 		client.connect(function (err) {
 			if (err) {
 				return console.error('could not connect to postgres', err);
@@ -252,11 +246,8 @@ app.post('/api/userSpeciesFromLocation', urlencodedParser, function (req, res) {
 							"values (" + userID + "," + result.rows[i].specieid + ")");
 						query.on("end", function (result) {
 							console.error(result);
-							if (i2 == result.rows.length - 1){
-								res.setHeader('Content-Type', 'application/json');
-								res.send(JSON.stringify({result:"success"})); //To stop it from timing out.
+							if (i2 == result.rows.length - 1)
 								client.end();
-							}
 						});
 					}
 				});
