@@ -144,30 +144,38 @@ function initFog(){
 	draw.globalCompositeOperation=dgCO;
 	draw.fillStyle=dfS;
 	
-	//TODO: GET ARRAY FROM SERVER HERE.
-	//fogArray = getArrayFromServer(...);
-	for(var x=0;x<134;x++){
-		for(var y=0;y<252;y++){
-			if(fogArray[y*134+x]==1){
-				light_grid(x,y);
-			}
-		}
-	}
+	//Get the fogs from the server, and attempt to 'clear up' the grid as needed.
+	getFogsFromUser();
 	
-	//Remove this.
+	//TODO: Remove this.
 	addClick();
 }
 
-function loadFogsFromUser(){
+function getFogsFromUser(){
 	$.ajax( {
 		method: "GET",
 		url: "/api/getFogsFromUser",
 		data: {}
 	} ).done( function(data){
-		console.log(data);
-		data.result.forEach( function(res,i){
-			//do something.
-		} );
+		var ffogs = data.result[0].fogs; //Update the fogs.
+		//Just in case, attempt to reduce data transferred between the client and the server. Might not always be on time, though.
+		for(var i=0;i<sendArray.length;i++){
+			if(ffogs[ sendArray[i] ] == 1){
+				sendArray.splice(i,1);
+				i--;
+			}
+		}
+		for(var i=0;i<ffogs.length;i++){
+			//Apply OR on each part of the fogArray, so we can still explore while the server sends us its array.
+			fogArray[i] |= ffogs[i];
+		}
+		for(var x=0;x<134;x++){
+			for(var y=0;y<252;y++){
+				if(fogArray[y*134+x]==1){
+					light_grid(x,y);
+				}
+			}
+		}
 	} );
 }
 
@@ -235,7 +243,14 @@ function light_grid(x,y){
 
 function updateServerArray(){
 	if(sendArray.length > 0){
-		//send array to server entirely.
+		$.ajax( {
+			method: "GET",
+			url: "/api/updateFogsForUser",
+			data: {seen: sendArray}
+		} ).done( function(data){
+			//Should only receive a "success" or "failure", or nothing (if nothing then remove this).
+			console.log( data );
+		} );
 		sendArray = []; //Clear the array.
 	}
 	//Otherwise, if the array is empty, do nothing.
