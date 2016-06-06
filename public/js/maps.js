@@ -80,6 +80,7 @@ function errorUserLocation(err) {
 
 /* chamada quando o user muda de localização */
 function t_success( coords ){
+	console.log( coords );
 	log("coords: " + coords.latitude + " " + coords.longitude);
 	var latlng = new google.maps.LatLng( coords.latitude, coords.longitude );
 	marker.setPosition( latlng );
