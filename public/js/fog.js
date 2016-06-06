@@ -7,8 +7,7 @@ var cBounds,
 	draw,
 	fogArray,
 	sendArray = [];
-//w=670, w/5=134
-//h=1260, h/5=252
+//w=670, w/5=134; h=1260, h/5=252;
 //134*252=33768 possible fog positions (~33kb)
 
 //Used to clear unused parts of the map:

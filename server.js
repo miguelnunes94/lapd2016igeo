@@ -135,6 +135,8 @@ CREATE TABLE userspecies(\
             if (err) {
                 return console.error('error running query', err);
             }
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify({result: "Quick&Dirty: Erased users from DB."}));
             client.end();
         });
     });
