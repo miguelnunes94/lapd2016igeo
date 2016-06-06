@@ -99,18 +99,12 @@ app.get('/api/updateFogsForUser', function (req, res) {
 		var userID = req.session.userid;
 		var seen = req.query.seen;
 		var client = new pg.Client(conString);
-		console.log(seen);
-		console.log("Seen:");
-		for(var i=0;i<seen.length;i++){
-			console.log(seen[i]);
-		}
-		console.log(":endSeen");
 		client.connect(function (err) {
 			if (err) {
 				return console.error('could not connect to postgres', err);
 			}
 			for(var i=0;i<seen.length;i++){
-				client.query("update users set fogs["+seen[i]+"] = 1 where userID=" + userID + ";", function (err, result) {
+				client.query("update users set fogs["+(seen[i]+1)+"] = 1 where userID=" + userID + ";", function (err, result) {
 					if (err) {
 						return console.error('error running query', err);
 					}
