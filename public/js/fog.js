@@ -160,7 +160,7 @@ function getFogsFromUser(){
 		var ffogs = data.result[0].fogs; //Update the fogs.
 		//Just in case, attempt to reduce data transferred between the client and the server. Might not always be on time, though.
 		for(var i=0;i<sendArray.length;i++){
-			if(ffogs[ sendArray[i] ] == 1){
+			if(ffogs[ sendArray[i]-1 ] == 1){
 				sendArray.splice(i,1);
 				i--;
 			}
@@ -215,7 +215,7 @@ function light(x,y){
 	if(fogArray[y*134+x]==1)
 		return;
 	fogArray[y*134+x] = 1;
-	sendArray.push(y*134+x);
+	sendArray.push(y*134+x+1);
 	light_grid(x,y);
 }
 
