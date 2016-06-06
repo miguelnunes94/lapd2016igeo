@@ -1,6 +1,6 @@
 CREATE EXTENSION postgis;
 
-DROP TABLE IF EXISTS routes;
+DROP TABLE IF EXISTS userspecies;
 DROP TABLE IF EXISTS users;
 /*DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS species;*/
@@ -12,13 +12,6 @@ CREATE TABLE users(
 	email char(256),
 	fogs integer[33768],
 	PRIMARY KEY(userID)
-);
-
-CREATE TABLE routes(
-	routeID SERIAL,
-	userID int references users(userID),
-	route xml,
-	PRIMARY KEY(routeID)
 );
 
 CREATE TABLE species (

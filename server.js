@@ -118,14 +118,19 @@ app.get('/dropSetUsers', function (req, res) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        client.query("DROP TABLE IF EXISTS users;\n\
-CREATE TABLE users(\n\
-	userID SERIAL,\n\
-	username char(50) UNIQUE,\n\
-	password char(256),\n\
-	email char(256),\n\
-	fogs integer[33768],\n\
-	PRIMARY KEY(userID)\n\
+        client.query("DROP TABLE IF EXISTS routes;DROP TABLE IF EXISTS userspecies;DROP TABLE IF EXISTS users;\
+CREATE TABLE users(\
+ userID SERIAL,\
+ username char(50) UNIQUE,\
+ password char(256),\
+ email char(256),\
+ fogs integer[33768],\
+ PRIMARY KEY(userID)\
+);\
+CREATE TABLE userspecies(\
+ specieID int references species(specieID),\
+ userID int references users(userID),\
+ PRIMARY KEY(userID,specieID)\
 );", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
