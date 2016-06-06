@@ -78,7 +78,11 @@ function errorUserLocation(err) {
 }
 
 /* chamada quando o user muda de localização */
-function t_success(crd){
+function t_success( coords ){
+	var latlng = new google.maps.LatLng( coords.latitude, coords.longitude );
+	marker.setPosition( latlng );
+	map_light( latlng );
+	updateServerArray();
 	//log('Sua posição atual é: Latitude : ' + crd.latitude + ',Longitude: ' + crd.longitude + ',Mais ou menos ' + crd.accuracy + ' metros.');
 };
 

@@ -150,7 +150,7 @@ function initFog(){
 	getFogsFromUser();
 	
 	//TODO: Remove this.
-	addClick();
+	//addClick();
 }
 
 function getFogsFromUser(){
@@ -198,7 +198,7 @@ function map_light( latLng ){
 	var proj = map.getProjection();
 	var tR = proj.fromLatLngToPoint( cBounds.getNorthEast() );
 	var bL = proj.fromLatLngToPoint( cBounds.getSouthWest() );
-	var wP = proj.fromLatLngToPoint(latLng);
+	var wP = proj.fromLatLngToPoint( latLng );
 	
 	var pw = tR.x - bL.x;
 	var ph = bL.y - tR.y;

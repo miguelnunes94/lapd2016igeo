@@ -120,7 +120,7 @@ app.get('/api/updateFogsForUser', function (req, res) {
 });
 
 /* quick&dirty fix */
-app.get('/dropSetUsers', function (req, res) {
+/*app.get('/dropSetUsers', function (req, res) {
 	var client = new pg.Client(conString);
 	client.connect(function (err) {
 		if (err) {
@@ -148,7 +148,7 @@ CREATE TABLE userspecies(\
 			client.end();
 		});
 	});
-});
+});*/
 
 /* GET fogs para um utilizador*/
 app.get('/api/getFogsFromUser', function (req, res) {
