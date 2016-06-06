@@ -6,7 +6,9 @@ var cBounds,
 	canvas = document.createElement("canvas"),
 	draw,
 	fogArray,
-	sendArray = [];
+	sendArray = [],
+	px = -1,
+	py = -1;
 //w=670, w/5=134; h=1260, h/5=252;
 //134*252=33768 possible fog positions (~33kb)
 
@@ -165,16 +167,16 @@ function getFogsFromUser(){
 				i--;
 			}
 		}
-		for(var i=0;i<ffogs.length;i++){
-			//Apply OR on each part of the fogArray, so we can still explore while the server sends us its array.
-			fogArray[i] |= ffogs[i];
-		}
 		for(var x=0;x<134;x++){
 			for(var y=0;y<252;y++){
-				if(fogArray[y*134+x]==1){
+				if(ffogs[y*134+x]==1 && fogArray[y*134+x]==0){
 					light_grid(x,y);
 				}
 			}
+		}
+		for(var i=0;i<ffogs.length;i++){
+			//Apply OR on each part of the fogArray, so we can still explore while the server sends us its array.
+			fogArray[i] |= ffogs[i];
 		}
 	} );
 }
@@ -204,7 +206,20 @@ function map_light( latLng ){
 	var px = (wP.x - bL.x) / pw;
 	var cx = px*canvas.width;
 	var cy = py*canvas.height;
-	light( cx, cy );
+	line( cx, cy );
+}
+
+/*make a line of 'light' from the previous point to the next*/
+function line(nx,ny){
+	if( px==-1 || py==-1 ){
+		light(nx,ny);
+	} else {
+		var len = Math.sqrt( (px-nx)*(px-nx)+(py-ny)*(py-ny) );
+		for(var i=0;i<len;i++)
+			light( Math.round( px+(nx-px)*i/lineLength ), Math.round( py+(ny-py)*i/lineLength ) );
+	}
+	px=nx;
+	py=ny;
 }
 
 /*clear area near clicked points*/
