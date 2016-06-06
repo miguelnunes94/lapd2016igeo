@@ -65,6 +65,7 @@ function sucessUserLocation(position) {
 	
 	var heyListen = google.maps.event.addListener(map, "idle", function () {
 		map_light(initialLocation);
+		updateServerArray();
 		google.maps.event.removeListener(heyListen);
 	});
 }
