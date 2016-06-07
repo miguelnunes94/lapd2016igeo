@@ -2,6 +2,7 @@ var map;
 var lognum = 0;
 var initialLocation;
 var marker;
+var pla, plo;
 
 /* inicia o map, esta função é chamada pela callback do google maps*/
 function initMap() {
@@ -28,6 +29,7 @@ function getUserLocation() {
 			enableHighAccuracy: false,
 			maximumAge: 90000
 		});
+		window.setInterval(updatePos, 10000); /* check for a new position every 10 seconds (10000ms) */
 	} else {
 		log('geolocation off');
 	}
@@ -51,14 +53,7 @@ function sucessUserLocation(position) {
 	// To add the marker to the map, call setMap();
 	marker.setMap(map);
 	waitingDialog.hide();
-	/* == TRACKING ==*/
-	var t_options = {
-		enableHighAccuracy: false,
-		timeout: 5000,
-		maximumAge: 0
-	};
-	navigator.geolocation.watchPosition(t_success, function(err){/* do nothing on errors, just wait for the next success.*/}, t_options);
-	
+
 	log("coords: " + position.coords.latitude + " " + position.coords.longitude);
 	loadSpeciesFromLocation(position.coords.latitude, position.coords.longitude);
 	addUserSpeciesFromLocation(position.coords.latitude, position.coords.longitude);
@@ -70,12 +65,17 @@ function sucessUserLocation(position) {
 	});
 }
 
-/* chamada quando à um erro ao receber a localização do google*/
-function errorUserLocation(err) {
-	log(err.message);
-	alert("errorUserLocation "+err.message);
-	//getUserLocation();
-	//window.location.replace('/');
+/* vai buscar a localização periodicamente do dispositivo, em vez de esperar pelo watchPosition. */
+function updatePos(){
+	navigator.geolocation.getCurrentPosition(
+		t_success,
+		function(err){}, /* do nothing on errors, just wait for the next success.*/
+		{
+			enableHighAccuracy: false,
+			timeout: 5000,
+			maximumAge: 0
+		}
+	);
 }
 
 /* chamada quando o user muda de localização */
@@ -83,13 +83,40 @@ function t_success( crd ){
 	if( crd == undefined || crd.coords == undefined || crd.coords.latitude == undefined || crd.coords.longitude == undefined )
 		return;
 	coords = crd.coords;
-	log("coords: " + coords.latitude + " " + coords.longitude);
-	var latlng = new google.maps.LatLng( coords.latitude, coords.longitude );
+	var cla = coords.latitude;
+	var clo = coords.longitude;
+	if( pla == undefined || plo == undefined ){
+		pla = cla;
+		plo = clo;
+	} else {
+		var len = Math.sqrt( (pla-cla)*(pla-cla)+(plo-clo)*(plo-clo) );
+		var aa = (cla-pla)/len;
+		var oo = (clo-plo)/len;
+		for(var i=0;i<len;i+=0.01){
+			addUserSpeciesFromLocation( pla + aa*i, plo + oo*i );
+		}
+		pla = cla;
+		plo = clo;
+	}
+	
+	loadSpeciesFromLocation( cla, clo );
+	
+	log("coords: " + cla + " " + clo );
+	var latlng = new google.maps.LatLng( cla, clo );
+	
 	marker.setPosition( latlng );
 	map_light( latlng );
 	updateServerArray();
 	//log('Sua posição atual é: Latitude : ' + crd.latitude + ',Longitude: ' + crd.longitude + ',Mais ou menos ' + crd.accuracy + ' metros.');
 };
+
+/* chamada quando à um erro ao receber a localização do google*/
+function errorUserLocation(err) {
+	log(err.message);
+	alert("errorUserLocation "+err.message);
+	//getUserLocation();
+	//window.location.replace('/');
+}
 
 /* manda mensagens para aquele div no fim da página que diz: LOG*/
 function log(msg) {
