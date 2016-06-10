@@ -67,6 +67,8 @@ function sucessUserLocation(position) {
 		updateServerArray();
 		google.maps.event.removeListener(heyListen);
 	});
+	pla = position.coords.latitude;
+	plo = position.coords.longitude;
 }
 
 /* vai buscar a localização periodicamente do dispositivo, em vez de esperar pelo watchPosition. */
@@ -84,11 +86,16 @@ function updatePos(){
 
 /* chamada quando o user muda de localização */
 function t_success( crd ){
-	if( crd == undefined || crd.coords == undefined || crd.coords.latitude == undefined || crd.coords.longitude == undefined )
-		return;
 	coords = crd.coords;
 	var cla = coords.latitude;
 	var clo = coords.longitude;
+	if( cla == pla && clo == plo )
+		return;
+
+	if( crd == undefined || crd.coords == undefined || crd.coords.latitude == undefined || crd.coords.longitude == undefined )
+		return;
+
+
 	if( pla == undefined || plo == undefined ){
 		pla = cla;
 		plo = clo;
