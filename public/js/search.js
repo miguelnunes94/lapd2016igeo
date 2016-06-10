@@ -15,6 +15,7 @@ function setup() {
         doSearch(lastText)
 
     });
+    $("body").append('<div id="search_dialogs"></div>');
 }
 
 function doSearch(text) {
@@ -25,7 +26,7 @@ function doSearch(text) {
     }).done(function (data) {
         if (text != $("#form-search-input").val())
             return;
-
+        $("#results").empty();
         console.log(data);
         var results = $("#results");
         data.result.forEach(function (res, i) {
@@ -41,7 +42,7 @@ function doSearch(text) {
                 tittle = '<h4 class="modal-title">'+res.scientificname.trim()+'</h4>'
             }
 
-            $("body").append('<div id="modal_search_'+res.specieid+'" class="modal fade" role="dialog">'+
+            $("#search_dialogs").append('<div id="modal_search_'+res.specieid+'" class="modal fade" role="dialog">'+
                 +'<div class="modal-dialog">'
                 +'<div class="modal-content">'
                 +'<div class="modal-header">'
