@@ -8,12 +8,12 @@ function loadSpeciesFromLocation(lat, long){
 	}).done(function (data){
 		console.log(data);
 		$("#showSpecies").text("");
-		
+
 		/*
 		$("#showSpecies").prepend('<button id="testFogBtn">Test Fog Grid</button>');
 		$("#testFogBtn").bind("click",testFog);
 		*/
-		
+
 		/*data.result.sort(function(a, b){
 			return -(a.scientificname.trim().length+a.nomevulgar.trim().length)+(b.scientificname.trim().length+b.nomevulgar.trim().length);
 		});*/
@@ -23,7 +23,7 @@ function loadSpeciesFromLocation(lat, long){
  				cls = "success";
 			i++;
 			$("#showSpecies").append('<button data-toggle="modal" data-target="#modal_'+res.specieid+'" type="button" class="showInfo btn btn-'+cls+'">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</button>');
-			
+
 			$("#showSpecies").append('<div id="modal_'+res.specieid+'" class="modal fade" role="dialog">'+
 				  +'<div class="modal-dialog">'
 				    +'<div class="modal-content">'
@@ -43,6 +43,7 @@ function loadSpeciesFromLocation(lat, long){
 				+'</div>');
 			$("#btn_"+res.specieid).bind("click",function(){
 				clearMap();
+				$("#modal_"+res.specieid).modal("hide");
 				loadLocationFromSpecies(res.specieid);
 			});
 		});
@@ -63,6 +64,7 @@ function loadLocationFromSpecies(especie){
 			var obj = jQuery.parseJSON(res.st_asgeojson);
 			poly = obj.coordinates[0];
 			paintPoly(poly);
+			map.setZoom(6);
 		} );
 	} );
 }

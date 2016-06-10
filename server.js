@@ -296,6 +296,27 @@ app.get('/api/catalog', function (req, res) {
 		});
 	}
 });
+app.get('/api/search', function (req, res) {
+		var text = req.query.text;
+		var client = new pg.Client(conString);
+		client.connect(function (err) {
+			if (err) {
+				return console.error('could not connect to postgres', err);
+			}
+			client.query("select * " +
+				"from species " +
+				"where scientificName ilike '%"+text+"%' " +
+				"or nomevulgar ilike '%"+text+"%'", function (err, result) {
+				if (err) {
+					return console.error('error running query', err);
+				}
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify({result: result.rows}));
+				client.end();
+			});
+		});
+});
+
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
 var port = Number(process.env.PORT || 3000);

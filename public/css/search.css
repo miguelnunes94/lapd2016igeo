@@ -1,0 +1,16 @@
+#results {
+    background-color: #f8f8f8;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+
+#results li{
+    padding: 10px;
+    width: auto;
+}
+#form-search , #form-search .form-group{
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
