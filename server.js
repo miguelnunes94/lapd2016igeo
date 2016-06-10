@@ -330,7 +330,6 @@ app.get('/api/gbif', function (req, res) {
             res.send(str);
         });
     };
-    console.error("http request: "+req.query.gbif);
     http.request(req.query.gbif, callback).end();
 
 });
