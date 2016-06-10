@@ -20,7 +20,6 @@ function initMap() {
 	waitingDialog.show('Requesting your location...');
 	getUserLocation();
 	if(window.location.hash){
-		console.log(window.location.hash);
 		clearMap();
 		loadLocationFromSpecies(window.location.hash.replace("#",""));
 	}

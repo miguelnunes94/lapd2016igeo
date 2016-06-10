@@ -5,6 +5,15 @@ var numUnKnown = 0;
 function setup() {
     showSpecies(true, $("#known"));
     showSpecies(false, $("#unknown"));
+
+    console.log("send");
+    $.ajax({
+        method: "GET",
+        url: "/api/gbif"
+    }).done(function (data) {
+        console.log("get gbif end");
+        console.log(data);
+    });
 }
 
 
@@ -65,10 +74,10 @@ function card(div, value, known) {
         + '</div>'
         + '</div>'
         + '</div>');
-    $("#btn_c_"+value.specieid).bind("click",function(){
+    $("#btn_c_" + value.specieid).bind("click", function () {
         $("#results").empty();
-        $("#modal_search_"+value.specieid).modal("hide");
-        window.location.replace("/"+"#"+value.specieid);
+        $("#modal_search_" + value.specieid).modal("hide");
+        window.location.replace("/" + "#" + value.specieid);
     });
 }
 
