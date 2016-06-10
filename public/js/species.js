@@ -37,14 +37,20 @@ function loadSpeciesFromLocation(lat, long){
 					console.log(obj);
 				} );*/
 			} );
-			$("#showSpecies").append('<button data-toggle="modal" data-target="#modal_'+res.specieid+'" type="button" class="showInfo btn btn-'+cls+'">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</button>');
+			var titulo;
+			if(res.nomevulgar.trim()!="Não tem"){
+				titulo=res.nomevulgar.trim()+' ('+res.scientificname.trim()+')';
+			}else{
+				titulo=res.scientificname.trim();
+			}
+			$("#showSpecies").append('<button data-toggle="modal" data-target="#modal_'+res.specieid+'" type="button" class="showInfo btn btn-'+cls+'">'+titulo+'</button>');
 
 			$("#showSpecies").append('<div id="modal_'+res.specieid+'" class="modal fade" role="dialog">'+
 				+'<div class="modal-dialog">'
 				+'<div class="modal-content">'
 				+'<div class="modal-header">'
 				+'<button type="button" class="close" data-dismiss="modal">&times;</button>'
-				+'<h4 class="modal-title">'+res.nomevulgar.trim()+' ('+res.scientificname.trim()+')</h4>'
+				+'<h4 class="modal-title">'+titulo+'</h4>'
 				+'</div>'
 				+'<div class="modal-body">'
 				+'<button id="btn_'+res.specieid+'">Ver no Mapa</button><br/>'
