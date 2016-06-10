@@ -327,13 +327,11 @@ app.get('/api/gbif', function (req, res) {
         });
 
         response.on('end', function () {
-            console.log(str);
             res.send(str);
-            // your code here if you want to use the results !
         });
     };
-
-    http.request("http://api.gbif.org/v1/species?name=Genetta%20genetta", callback).end();
+    console.error("http request: "+req.query.gbif);
+    http.request(req.query.gbif, callback).end();
 
 });
 /*========================================================================*/

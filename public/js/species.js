@@ -22,11 +22,10 @@ function loadSpeciesFromLocation(lat, long){
 			if(i%2==0)
 				cls = "success";
 			i++;
-			
 			$.ajax( {
 				method: "GET",
-				url: "http://api.gbif.org/v1/species?name="+res.scientificname.trim().substr(0,res.scientificname.trim().indexOf(' '))+"%20"
-					+res.scientificname.trim().substr(res.scientificname.trim().indexOf(' ')+1)
+				url: "/api/gbif",
+				data: {gbif: encodeURI("http://api.gbif.org/v1/species?name="+res.scientificname.trim())}
 			} ).done( function(data){
 				console.log(data);
 				/*data.result.forEach( function(res,i){

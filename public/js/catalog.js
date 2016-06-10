@@ -5,15 +5,6 @@ var numUnKnown = 0;
 function setup() {
     showSpecies(true, $("#known"));
     showSpecies(false, $("#unknown"));
-
-    console.log("send");
-    $.ajax({
-        method: "GET",
-        url: "/api/gbif"
-    }).done(function (data) {
-        console.log("get gbif end");
-        console.log(data);
-    });
 }
 
 
