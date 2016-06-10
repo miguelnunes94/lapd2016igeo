@@ -334,6 +334,13 @@ app.get('/api/gbif', function (req, res) {
     http.request(req.query.gbif, callback).end();
 
 });
+app.get('/search', function (req, res) {
+    if (req.session.loggedin) {
+        sendHTML(res, "search", {username: req.session.username});
+    } else {
+        res.redirect('/');
+    }
+});
 /*========================================================================*/
 /* INICIAR O SERVIDOR */
 var port = Number(process.env.PORT || 3000);
