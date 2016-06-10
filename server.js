@@ -303,7 +303,7 @@ app.get('/api/search', function (req, res) {
 			if (err) {
 				return console.error('could not connect to postgres', err);
 			}
-			client.query("select * " +
+			client.query("select distinct(specieid),* " +
 				"from species " +
 				"where scientificName ilike '%"+text+"%' " +
 				"or nomevulgar ilike '%"+text+"%'", function (err, result) {
