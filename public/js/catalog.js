@@ -1,5 +1,4 @@
-//TODO guardar especies quando o user se move
-//TODO obter lista de especies e mostrar
+
 var numKnown = 0;
 var numUnKnown = 0;
 function setup() {
@@ -35,8 +34,8 @@ function card(div, value, known) {
         tittle = '<h4 class="modal-title">' + value.scientificname.trim() + '</h4>'
     }
     div.append(
-        '<div style="background-color: gray ;'
-        + '  padding: 5px; z-index:' + index + '; opacity: ' + opacity + '">'
+        '<div class="" style="background-color: gray ;'
+        + '  padding: 2px; z-index:' + index + '; opacity: ' + opacity + '">'
         + '<div class="w3-card-12" style="background-color: white;">'
         + '<img id="img_card_cat_'+value.specieid+'" class="img-responsive center-block" '
         + 'src="http://icons.iconarchive.com/icons/icons8/ios7/256/Very-Basic-Help-icon.png">'

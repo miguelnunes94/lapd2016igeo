@@ -1,6 +1,5 @@
 /*load bichos para uma localização*/
 function loadSpeciesFromLocation(lat, long) {
-    var species;
     $.ajax({
         method: "GET",
         url: "/api/getSpeciesFromLocation",
@@ -22,7 +21,6 @@ function loadSpeciesFromLocation(lat, long) {
             var cls = "primary";
             if (i % 2 == 0)
                 cls = "success";
-            i++;
 
             var titulo;
             if (res.nomevulgar.trim() != "Não tem") {
@@ -64,6 +62,7 @@ function addUserSpeciesFromLocation(lat, long) {
 }
 
 function loadSpecieGBif(speciesList, res, titulo, source, id) {
+    console.log("LoadGbifSpecie");
     var gbifUrl = encodeURI("http://api.gbif.org/v1/species?name=" + res.scientificname.trim()) + "&limit=999999999";
     $.ajax({
         method: "GET",
@@ -76,6 +75,22 @@ function loadSpecieGBif(speciesList, res, titulo, source, id) {
             if (bicho.references) {
                 if (bicho.references.indexOf("en.wikipedia.org") > -1) {
                     bichoFinal.references = bicho.references;
+                    /*load wikipedia description*/
+                    if (!bichoFinal.description) {
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/gbif",
+                            data: {gbif: "http://api.gbif.org/v1/species/" + bicho.key + "/descriptions"}
+                        }).done(function (descs) {
+                            descs = $.parseJSON(descs);
+                            descs.results.forEach(function (desc, i) {
+                                if (!bichoFinal.description && desc.language == "eng") {
+                                    bichoFinal.description = desc.description;
+                                    $('#desc_' + id + res.specieid).text(desc.description);
+                                }
+                            });
+                        });
+                    }
                 }
             }
             if (!bichoFinal.kingdom) {
@@ -115,7 +130,7 @@ function loadSpecieGBif(speciesList, res, titulo, source, id) {
             if (!bichoFinal.references) {
                 bichoFinal.references = bicho.references;
             }
-            if (!bichoFinal.image) {
+            if (!bichoFinal.image && !$('#img_' + id + res.specieid).attr("src")) {
                 /*load image*/
                 $.ajax({
                     method: "GET",
@@ -125,9 +140,15 @@ function loadSpecieGBif(speciesList, res, titulo, source, id) {
                     medias = $.parseJSON(medias);
                     medias.results.forEach(function (media, i) {
                         if (media.format.indexOf("image") > -1) {
-                            bichoFinal.image = media.identifier;
-                            $('#img_' + id + res.specieid).attr("src", media.identifier);
-                            $('#img_card_cat_' + res.specieid).attr("src", media.identifier);
+                            $.ajax({//verificar se a image existe
+                                url: media.identifier,
+                                type: 'HEAD',
+                                success: function () {
+                                    bichoFinal.image = media.identifier;
+                                    $('#img_' + id + res.specieid).attr("src", media.identifier);
+                                    $('#img_card_cat_' + res.specieid).attr("src", media.identifier);
+                                }
+                            });
                         }
                     });
                 });
@@ -174,6 +195,8 @@ function getModalString(bicho, res, titulo, id) {
         + '</div>'
         + '<div class="modal-body">'
         + img
+        + '<br/>'
+        + '<p id="desc_' + id + res.specieid + '"></p>'
         + '<table class="table">'
         + '<tbody>'
         + '<tr>'
