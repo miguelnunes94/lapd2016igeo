@@ -145,6 +145,9 @@ function loadSpecieGBif(speciesList, res, titulo, source, id) {
                                 type: 'HEAD',
                                 success: function () {
                                     bichoFinal.image = media.identifier;
+                                    media.identifier = media.identifier.replace("https","");
+                                    media.identifier = media.identifier.replace("http","");
+                                    media.identifier = "https"+media.identifier;
                                     $('#img_' + id + res.specieid).attr("src", media.identifier);
                                     $('#img_card_cat_' + res.specieid).attr("src", media.identifier);
                                 }
