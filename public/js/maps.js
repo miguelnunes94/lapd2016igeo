@@ -96,19 +96,11 @@ function t_success( crd ){
 		return;
 
 
-	if( pla == undefined || plo == undefined ){
+
 		pla = cla;
 		plo = clo;
-	} else {
-		var len = Math.sqrt( (pla-cla)*(pla-cla)+(plo-clo)*(plo-clo) );
-		var aa = (cla-pla)/len;
-		var oo = (clo-plo)/len;
-		for(var i=0;i<len;i+=0.01){
-			addUserSpeciesFromLocation( pla + aa*i, plo + oo*i );
-		}
-		pla = cla;
-		plo = clo;
-	}
+		addUserSpeciesFromLocation( pla, pla );
+
 	
 	loadSpeciesFromLocation( cla, clo );
 	
