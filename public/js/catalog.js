@@ -38,7 +38,7 @@ function card(div, value, known) {
         '<div style="background-color: gray ;'
         + '  padding: 5px; z-index:' + index + '; opacity: ' + opacity + '">'
         + '<div class="w3-card-12" style="background-color: white;">'
-        + '<img class="img-responsive center-block" '
+        + '<img id="img_card_cat_'+value.specieid+'" class="img-responsive center-block" '
         + 'src="http://icons.iconarchive.com/icons/icons8/ios7/256/Very-Basic-Help-icon.png">'
         + '<hr/>'
         + '<div class="w3-container w3-center">'
@@ -49,27 +49,7 @@ function card(div, value, known) {
         + '</div>'
         + '</div>');
 
-    $("#dialogs").append('<div id="modal_cat_' + value.specieid + '" class="modal fade" role="dialog">' + +'<div class="modal-dialog">'
-        + '<div class="modal-content">'
-        + '<div class="modal-header">'
-        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-        + tittle
-        + '</div>'
-        + '<div class="modal-body">'
-        + '<button id="btn_c_' + value.specieid + '">Ver no Mapa</button><br/>'
-        + '<p>Falta por aqui a informação do GBIF (detalhes, descrição e imagem da espécie)</p>'
-        + '</div>'
-        + '<div class="modal-footer">'
-        + '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
-        + '</div>'
-        + '</div>'
-        + '</div>'
-        + '</div>');
-    $("#btn_c_" + value.specieid).bind("click", function () {
-        $("#results").empty();
-        $("#modal_search_" + value.specieid).modal("hide");
-        window.location.replace("/" + "#" + value.specieid);
-    });
+    loadSpecieGBif($("#search_dialogs"),value, tittle,"catalog","modal_cat_");
 }
 
 function updateNumSpecies() {

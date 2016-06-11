@@ -31,7 +31,7 @@ function loadSpeciesFromLocation(lat, long) {
                 titulo = res.scientificname.trim();
             }
             speciesList.append('<button data-toggle="modal" data-target="#modal_' + res.specieid + '" type="button" class="showInfo btn btn-' + cls + '">' + titulo + '</button>');
-            loadSpecieGBif(speciesList,res,titulo);
+            loadSpecieGBif(speciesList, res, titulo, "map", "modal_");
 
         });
     });
@@ -63,7 +63,7 @@ function addUserSpeciesFromLocation(lat, long) {
     });
 }
 
-function loadSpecieGBif(speciesList,res, titulo) {
+function loadSpecieGBif(speciesList, res, titulo, source, id) {
     var gbifUrl = encodeURI("http://api.gbif.org/v1/species?name=" + res.scientificname.trim()) + "&limit=999999999";
     $.ajax({
         method: "GET",
@@ -126,27 +126,47 @@ function loadSpecieGBif(speciesList,res, titulo) {
                     medias.results.forEach(function (media, i) {
                         if (media.format.indexOf("image") > -1) {
                             bichoFinal.image = media.identifier;
-                            $('#img_'+ res.specieid).attr( "src", media.identifier );
+                            $('#img_' + id + res.specieid).attr("src", media.identifier);
+                            $('#img_card_cat_' + res.specieid).attr("src", media.identifier);
                         }
                     });
                 });
             }
         });
-        speciesList.append(getModalString(bichoFinal, res, titulo,"modal_"));
-        $("#btn_" + res.specieid).bind("click", function () {
-            clearMap();
-            $("#modal_" + res.specieid).modal("hide");
-            loadLocationFromSpecies(res.specieid);
-        });
+        speciesList.append(getModalString(bichoFinal, res, titulo, id));
+        if (source == "search_bar") {
+            $("#btn_" + id + res.specieid).bind("click", function () {
+                if (window.location.pathname == "/catalog") {
+                    window.location.replace("/" + "#" + res.specieid);
+                } else {
+                    clearMap();
+                    $("#results").empty();
+                    $("#" + id + res.specieid).modal("hide");
+                    loadLocationFromSpecies(res.specieid);
+                }
+            });
+        } else if (source == "catalog") {
+            $("#btn_" + id + res.specieid).bind("click", function () {
+                $("#results").empty();
+                $("#" + id + res.specieid).modal("hide");
+                window.location.replace("/" + "#" + res.specieid);
+            });
+        } else {
+            $("#btn_" + id + res.specieid).bind("click", function () {
+                clearMap();
+                $("#" + id + res.specieid).modal("hide");
+                loadLocationFromSpecies(res.specieid);
+            });
+        }
     });
 }
 
 function getModalString(bicho, res, titulo, id) {
-    var img='<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_'+ res.specieid + '" src="' + bicho.image + '">';
-    if(bicho.image){
-        img='<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_'+ res.specieid + '" src="' + bicho.image + '">';
+    var img = '<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_' + id + res.specieid + '" src="' + bicho.image + '">';
+    if (bicho.image) {
+        img = '<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_' + id + res.specieid + '" src="' + bicho.image + '">';
     }
-    return '<div id="'+id + res.specieid + '" class="modal fade" role="dialog">' + +'<div class="modal-dialog">'
+    return '<div id="' + id + res.specieid + '" class="modal fade" role="dialog">' + +'<div class="modal-dialog">'
         + '<div class="modal-content">'
         + '<div class="modal-header">'
         + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
@@ -202,7 +222,7 @@ function getModalString(bicho, res, titulo, id) {
         // + '</tr>'
         + '</tbody>'
         + '</table>'
-        + '<button class="btn btn-default" id="btn_' + res.specieid + '">Ver no Mapa</button><br/>'
+        + '<button class="btn btn-default" id="btn_' + id + res.specieid + '">Ver no Mapa</button><br/>'
         + '</div>'
         + '<div class="modal-footer">'
         + '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'

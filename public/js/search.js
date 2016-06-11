@@ -42,34 +42,8 @@ function doSearch(text) {
                 tittle = '<h4 class="modal-title">'+res.scientificname.trim()+'</h4>'
             }
 
-            $("#search_dialogs").append('<div id="modal_search_'+res.specieid+'" class="modal fade" role="dialog">'+
-                +'<div class="modal-dialog">'
-                +'<div class="modal-content">'
-                +'<div class="modal-header">'
-                +'<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                +tittle
-                +'</div>'
-                +'<div class="modal-body">'
-                +'<button id="btn_s_'+res.specieid+'">Ver no Mapa</button><br/>'
-                +'<p>Falta por aqui a informação do GBIF (detalhes, descrição e imagem da espécie)</p>'
-                +'</div>'
-                +'<div class="modal-footer">'
-                +'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
-                +'</div>'
-                +'</div>'
-                +'</div>'
-                +'</div>');
-            $("#btn_s_"+res.specieid).bind("click",function(){
-                console.log(window.location);
-                if(window.location.pathname=="/catalog"){
-                    window.location.replace("/"+"#"+res.specieid);
-                }else{
-                    clearMap();
-                    $("#results").empty();
-                    $("#modal_search_"+res.specieid).modal("hide");
-                    loadLocationFromSpecies(res.specieid);
-                }
-            });
+            loadSpecieGBif($("#search_dialogs"),res, tittle,"search_bar","modal_search_");
+
         });
     });
 }
