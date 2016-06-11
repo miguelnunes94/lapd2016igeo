@@ -23,7 +23,7 @@ function loadSpeciesFromLocation(lat, long) {
             if (i % 2 == 0)
                 cls = "success";
             i++;
-            var gbifUrl = encodeURI("http://api.gbif.org/v1/species?name=" + res.scientificname.trim()) + "&limit=999999999";
+
             var titulo;
             if (res.nomevulgar.trim() != "Não tem") {
                 titulo = res.nomevulgar.trim() + ' (' + res.scientificname.trim() + ')';
@@ -31,65 +31,8 @@ function loadSpeciesFromLocation(lat, long) {
                 titulo = res.scientificname.trim();
             }
             speciesList.append('<button data-toggle="modal" data-target="#modal_' + res.specieid + '" type="button" class="showInfo btn btn-' + cls + '">' + titulo + '</button>');
+            loadSpecieGBif(speciesList,res,titulo);
 
-            $.ajax({
-                method: "GET",
-                url: "/api/gbif",
-                data: {gbif: gbifUrl}
-            }).done(function (data) {
-                data = $.parseJSON(data);
-                var bichoFinal = [];
-                data.results.forEach(function (bicho, i) {
-                    if (bicho.references) {
-                        if (bicho.references.indexOf("en.wikipedia.org") > -1) {
-                            bichoFinal.references = bicho.references;
-                        }
-                    }
-                    if (!bichoFinal.kingdom) {
-                        bichoFinal.kingdom = bicho.kingdom;
-                    }
-                    if (!bichoFinal.phylum) {
-                        bichoFinal.phylum = bicho.phylum;
-                    }
-                    if (!bichoFinal.order) {
-                        bichoFinal.order = bicho.order;
-                    }
-
-                    if (!bichoFinal.family) {
-                        bichoFinal.family = bicho.family;
-                    }
-
-                    if (!bichoFinal.genus) {
-                        bichoFinal.genus = bicho.genus;
-                    }
-                    if (!bichoFinal.species) {
-                        bichoFinal.species = bicho.species;
-                    }
-                    if (!bichoFinal.parent) {
-                        bichoFinal.parent = bicho.parent;
-                    }
-                    if (!bichoFinal.scientificName) {
-                        bichoFinal.scientificName = bicho.scientificName;
-                    }
-                    if (!bichoFinal.rank) {
-                        bichoFinal.rank = bicho.rank;
-                    }
-
-                    if (!bichoFinal.class) {
-                        bichoFinal.class = bicho.class;
-                    }
-
-                    if (!bichoFinal.references) {
-                        bichoFinal.references = bicho.references;
-                    }
-                });
-                speciesList.append(getModalString(bichoFinal, res, titulo));
-                $("#btn_" + res.specieid).bind("click", function () {
-                    clearMap();
-                    $("#modal_" + res.specieid).modal("hide");
-                    loadLocationFromSpecies(res.specieid);
-                });
-            });
         });
     });
 }
@@ -120,14 +63,97 @@ function addUserSpeciesFromLocation(lat, long) {
     });
 }
 
-function getModalString(bicho, res, titulo) {
-    return '<div id="modal_' + res.specieid + '" class="modal fade" role="dialog">' + +'<div class="modal-dialog">'
+function loadSpecieGBif(speciesList,res, titulo) {
+    var gbifUrl = encodeURI("http://api.gbif.org/v1/species?name=" + res.scientificname.trim()) + "&limit=999999999";
+    $.ajax({
+        method: "GET",
+        url: "/api/gbif",
+        data: {gbif: gbifUrl}
+    }).done(function (data) {
+        data = $.parseJSON(data);
+        var bichoFinal = [];
+        data.results.forEach(function (bicho, i) {
+            if (bicho.references) {
+                if (bicho.references.indexOf("en.wikipedia.org") > -1) {
+                    bichoFinal.references = bicho.references;
+                }
+            }
+            if (!bichoFinal.kingdom) {
+                bichoFinal.kingdom = bicho.kingdom;
+            }
+            if (!bichoFinal.phylum) {
+                bichoFinal.phylum = bicho.phylum;
+            }
+            if (!bichoFinal.order) {
+                bichoFinal.order = bicho.order;
+            }
+
+            if (!bichoFinal.family) {
+                bichoFinal.family = bicho.family;
+            }
+
+            if (!bichoFinal.genus) {
+                bichoFinal.genus = bicho.genus;
+            }
+            if (!bichoFinal.species) {
+                bichoFinal.species = bicho.species;
+            }
+            if (!bichoFinal.parent) {
+                bichoFinal.parent = bicho.parent;
+            }
+            if (!bichoFinal.scientificName) {
+                bichoFinal.scientificName = bicho.scientificName;
+            }
+            if (!bichoFinal.rank) {
+                bichoFinal.rank = bicho.rank;
+            }
+
+            if (!bichoFinal.class) {
+                bichoFinal.class = bicho.class;
+            }
+
+            if (!bichoFinal.references) {
+                bichoFinal.references = bicho.references;
+            }
+            if (!bichoFinal.image) {
+                /*load image*/
+                $.ajax({
+                    method: "GET",
+                    url: "/api/gbif",
+                    data: {gbif: "http://api.gbif.org/v1/species/" + bicho.key + "/media"}
+                }).done(function (medias) {
+                    medias = $.parseJSON(medias);
+                    medias.results.forEach(function (media, i) {
+                        if (media.format.indexOf("image") > -1) {
+                            bichoFinal.image = media.identifier;
+                            $('#img_'+ res.specieid).attr( "src", media.identifier );
+                        }
+                    });
+                });
+            }
+        });
+        speciesList.append(getModalString(bichoFinal, res, titulo,"modal_"));
+        $("#btn_" + res.specieid).bind("click", function () {
+            clearMap();
+            $("#modal_" + res.specieid).modal("hide");
+            loadLocationFromSpecies(res.specieid);
+        });
+    });
+}
+
+function getModalString(bicho, res, titulo, id) {
+    var img='<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_'+ res.specieid + '" src="' + bicho.image + '">';
+    if(bicho.image){
+        img='<img class="col-md-8 col-xs-12 col-lg-6 img-responsive center-block" id="img_'+ res.specieid + '" src="' + bicho.image + '">';
+    }
+    return '<div id="'+id + res.specieid + '" class="modal fade" role="dialog">' + +'<div class="modal-dialog">'
         + '<div class="modal-content">'
         + '<div class="modal-header">'
         + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
         + '<h4 class="modal-title">' + titulo + '</h4>'
         + '</div>'
         + '<div class="modal-body">'
+        + img
         + '<table class="table">'
         + '<tbody>'
         + '<tr>'
