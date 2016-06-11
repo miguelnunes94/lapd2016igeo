@@ -16,7 +16,8 @@ app.use(flash());
 //POSTGRES
 var pg = require('pg');
 var conString = String(process.env.DATABASE_URL || "postgres://postgres:12345@localhost/postgres");
-
+var client = new pg.Client(conString);
+client.connect();
 /*========================================================================*/
 
 /*  RESPOSTAS AOS PEDIDOS REST */
@@ -37,31 +38,26 @@ app.post('/login', urlencodedParser, function (req, res) {
 
     var username = req.body.username;
     var password = req.body.password;
-    var client = new pg.Client(conString);
-    client.connect(function (err) {
+
+    client.query("select * from users where username='" + username + "'", function (err, result) {
         if (err) {
-            return console.error('could not connect to postgres', err);
+            return console.error('error running query', err);
         }
-        client.query("select * from users where username='" + username + "'", function (err, result) {
-            if (err) {
-                return console.error('error running query', err);
-            }
-            if (result.rows.length > 0) {
-                if (result.rows[0].password.trim() == password) {
-                    req.session.loggedin = true;
-                    req.session.userid = result.rows[0].userid;
-                    req.session.username = result.rows[0].username;
-                } else {
-                    req.session.loggedin = false;
-                    req.flash('message', "Wrong password");
-                }
+        if (result.rows.length > 0) {
+            if (result.rows[0].password.trim() == password) {
+                req.session.loggedin = true;
+                req.session.userid = result.rows[0].userid;
+                req.session.username = result.rows[0].username;
             } else {
-                req.flash('message', "User not found");
+                req.session.loggedin = false;
+                req.flash('message', "Wrong password");
             }
-            client.end();
-            res.redirect('/');
-        });
+        } else {
+            req.flash('message', "User not found");
+        }
+        res.redirect('/');
     });
+
 });
 
 /* GET LOGOUT*/
@@ -82,13 +78,10 @@ app.post('/register', urlencodedParser, function (req, res) {
         res.redirect('/');
     }
     else {
-        var client = new pg.Client(conString);
-        client.connect();
         var query = client.query("insert into users (username,password,email,fogs) " +
             "values ('" + req.body.username + "','" +
             req.body.password + "','" + req.body.email + "',array_fill(0, ARRAY[33768]))");
         query.on("end", function (result) {
-            client.end();
             res.redirect('/');
         });
     }
@@ -99,24 +92,15 @@ app.get('/api/updateFogsForUser', function (req, res) {
     if (req.session.loggedin) {
         var userID = req.session.userid;
         var seen = req.query.seen;
-        var client = new pg.Client(conString);
-        client.connect(function (err) {
-            if (err) {
-                return console.error('could not connect to postgres', err);
-            }
-            for (var i = 0; i < seen.length; i++) {
-                client.query("update users set fogs[" + seen[i] + "] = 1 where userID=" + userID + ";", function (err, result) {
-                    if (err) {
-                        return console.error('error running query', err);
-                    }
-                    if (i == seen.length - 1) {
-                        client.end();
-                    }
-                });
-            }
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({result: "success"}));
-        });
+        for (var i = 0; i < seen.length; i++) {
+            client.query("update users set fogs[" + seen[i] + "] = 1 where userID=" + userID + ";", function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+            });
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({result: "success"}));
     }
 });
 
@@ -155,19 +139,12 @@ app.get('/api/updateFogsForUser', function (req, res) {
 app.get('/api/getFogsFromUser', function (req, res) {
     if (req.session.loggedin) {
         var userID = req.session.userid;
-        var client = new pg.Client(conString);
-        client.connect(function (err) {
+        client.query("select fogs from users where userID=" + userID + ";", function (err, result) {
             if (err) {
-                return console.error('could not connect to postgres', err);
+                return console.error('error running query', err);
             }
-            client.query("select fogs from users where userID=" + userID + ";", function (err, result) {
-                if (err) {
-                    return console.error('error running query', err);
-                }
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({result: result.rows}));
-                client.end();
-            });
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({result: result.rows}));
         });
     }
 });
@@ -177,24 +154,17 @@ app.get('/api/getFogsFromUser', function (req, res) {
 app.get('/api/getSpeciesFromLocation', function (req, res) {
     var lat = req.query.lat;
     var long = req.query.long;
-    var client = new pg.Client(conString);
-    client.connect(function (err) {
+    client.query("select scientificname, nomevulgar, species.specieid "
+        + "from species,	("
+        + "select distinct specieID "
+        + "from locations "
+        + "where st_covers(location, ST_GeographyFromText('SRID=4326;POINT(" + lat + " " + long + ")'))"
+        + ") loc where species.specieid=loc.specieid;", function (err, result) {
         if (err) {
-            return console.error('could not connect to postgres', err);
+            return console.error('error running query', err);
         }
-        client.query("select scientificname, nomevulgar, species.specieid "
-            + "from species,	("
-            + "select distinct specieID "
-            + "from locations "
-            + "where st_covers(location, ST_GeographyFromText('SRID=4326;POINT(" + lat + " " + long + ")'))"
-            + ") loc where species.specieid=loc.specieid;", function (err, result) {
-            if (err) {
-                return console.error('error running query', err);
-            }
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({lat: lat, long: long, result: result.rows}));
-            client.end();
-        });
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({lat: lat, long: long, result: result.rows}));
     });
 });
 
@@ -202,21 +172,14 @@ app.get('/api/getSpeciesFromLocation', function (req, res) {
 //TODO: Verificar se 'especie' esta definido no query? E se existem areas para a especie (caso o utilizador tenha manipulado a pagina para fazer uma query que nao devia)?
 app.get('/api/getLocationFromSpecies', function (req, res) {
     var especie = req.query.especie;
-    var client = new pg.Client(conString);
-    client.connect(function (err) {
+    client.query("select ST_AsGeoJSON(location) "
+        + "from locations "
+        + "where specieid=" + especie + ";", function (err, result) {
         if (err) {
-            return console.error('could not connect to postgres', err);
+            return console.error('error running query', err);
         }
-        client.query("select ST_AsGeoJSON(location) "
-            + "from locations "
-            + "where specieid=" + especie + ";", function (err, result) {
-            if (err) {
-                return console.error('error running query', err);
-            }
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({especie: especie, result: result.rows}));
-            client.end();
-        });
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({especie: especie, result: result.rows}));
     });
 });
 /**
@@ -227,34 +190,26 @@ app.post('/api/userSpeciesFromLocation', urlencodedParser, function (req, res) {
         var userID = req.session.userid;
         var lat = req.body.lat;
         var long = req.body.long;
-        var client = new pg.Client(conString);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({result: "success"})); //To stop it from timing out.
-        client.connect(function (err) {
-            if (err) {
-                return console.error('could not connect to postgres', err);
-            }
-            client.query("select distinct specieID "
-                + " from locations "
-                + " where specieID not in (select specieID from userspecies where userID=" + userID + ") "
-                + " and st_covers(location, ST_GeographyFromText('SRID=4326;POINT(" + lat + " " + long + ")'));",
-                function (err, result) {
-                    if (err) {
-                        return console.error('error running query', err);
-                    }
-                    for (var i = 0; i < result.rows.length; i++) {
-                        console.error(result.rows[i].specieid);
-                        var i2 = i;
-                        var query = client.query("insert into userspecies (userID,specieID) " +
-                            "values (" + userID + "," + result.rows[i].specieid + ")");
-                        query.on("end", function (result) {
-                            console.error(result);
-                            if (i2 == result.rows.length - 1)
-                                client.end();
-                        });
-                    }
-                });
-        });
+        client.query("select distinct specieID "
+            + " from locations "
+            + " where specieID not in (select specieID from userspecies where userID=" + userID + ") "
+            + " and st_covers(location, ST_GeographyFromText('SRID=4326;POINT(" + lat + " " + long + ")'));",
+            function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+                for (var i = 0; i < result.rows.length; i++) {
+                    console.error(result.rows[i].specieid);
+                    var i2 = i;
+                    var query = client.query("insert into userspecies (userID,specieID) " +
+                        "values (" + userID + "," + result.rows[i].specieid + ")");
+                    query.on("end", function (result) {
+                        console.error(result);
+                    });
+                }
+            });
     }
 });
 
@@ -270,7 +225,6 @@ app.get('/api/catalog', function (req, res) {
     if (req.session.loggedin) {
         var known = req.query.known;
         var userID = req.session.userid;
-        var client = new pg.Client(conString);
         var select = "";
         if (known == 'true') {
             select = "select distinct species.specieID, scientificName, nomevulgar"
@@ -282,45 +236,33 @@ app.get('/api/catalog', function (req, res) {
                 + " from species"
                 + " where species.specieID not in (select specieID from userspecies where userID=" + userID + ")";
         }
-        client.connect(function (err) {
-            if (err) {
-                return console.error('could not connect to postgres', err);
-            }
-            client.query(select, function (err, result) {
-                if (err) {
-                    return console.error('error running query', err);
-                }
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({result: result.rows}));
-                client.end();
-            });
-        });
-    }
-});
-app.get('/api/search', function (req, res) {
-    var text = req.query.text;
-    var client = new pg.Client(conString);
-    client.connect(function (err) {
-        if (err) {
-            return console.error('could not connect to postgres', err);
-        }
-        client.query("select distinct(scientificName),* " +
-            "from species " +
-            "where scientificName ilike '%" + text + "%' " +
-            "or nomevulgar ilike '%" + text + "%'", function (err, result) {
+
+        client.query(select, function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify({result: result.rows}));
-            client.end();
         });
+    }
+});
+app.get('/api/search', function (req, res) {
+    var text = req.query.text;
+    client.query("select distinct(scientificName),* " +
+        "from species " +
+        "where scientificName ilike '%" + text + "%' " +
+        "or nomevulgar ilike '%" + text + "%'", function (err, result) {
+        if (err) {
+            return console.error('error running query', err);
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({result: result.rows}));
     });
 });
 
 app.get('/api/gbif', function (req, res) {
     var str = '';
-    callback = function(response) {
+    callback = function (response) {
 
         response.on('data', function (chunk) {
             str += chunk;
@@ -345,10 +287,10 @@ app.get('/search', function (req, res) {
 var port = Number(process.env.PORT || 3000);
 var server = app.listen(port, function () {
 
-    var host = server.address().address
-    var port = server.address().port
+    var host = server.address().address;
+    var port = server.address().port;
 
-    console.log("App listening at http://%s:%s", host, port)
+    console.log("App listening at http://%s:%s", host, port);
 
 });
 
